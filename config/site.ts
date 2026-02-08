@@ -10,7 +10,6 @@ export const siteConfig = {
   links: {
     github: "https://github.com/printfmehdi",
     linkedin: "https://www.linkedin.com/in/el-mehdi-rahali",
-    templateRepo: "https://github.com/namanbarkiya/minimal-next-portfolio",
   },
 
   // optional, aber oft im Template genutzt:
