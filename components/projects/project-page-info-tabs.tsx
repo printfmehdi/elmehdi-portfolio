@@ -30,6 +30,7 @@ export default function ProjectPageInfoTabs({ pages }: ProjectPageInfoTabsProps)
             <TabsTrigger
               key={page.title}
               value={values[index]}
+              onClick={() => setActiveValue(values[index])}
               className="rounded-full border bg-background px-4 py-2 text-xs data-[state=active]:border-primary"
             >
               {page.title}
@@ -62,4 +63,3 @@ export default function ProjectPageInfoTabs({ pages }: ProjectPageInfoTabsProps)
     </div>
   );
 }
-

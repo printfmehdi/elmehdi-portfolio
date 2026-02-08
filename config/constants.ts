@@ -46,6 +46,7 @@ export type ValidSkills =
   | "Clean Architecture"
   | "Quartz"
   | "Temporal"
+  | "SignalR"
 
 export type ValidCategory =
   | "Backend"
@@ -53,7 +54,8 @@ export type ValidCategory =
   | "Full Stack"
   | "Web Dev"
   | "UI/UX"
-  | "Data/ML";
+  | "Data/ML"
+  | "Machine Learning";
 
 export type ValidExpType = "Personal" | "Professional" | "Academic";
 
