@@ -34,7 +34,7 @@ export const skillsUnsorted: skillsInterface[] = [
     description:
       "Securing enterprise applications with authorization rules, tenant isolation, and least-privilege access patterns.",
     rating: 4,
-    icon: Icons.auth0,
+    icon: Icons.security,
   },
   {
     name: "Multi-Tenancy & Tenant Isolation",
@@ -47,7 +47,7 @@ export const skillsUnsorted: skillsInterface[] = [
     name: "Entity Framework Core, LINQ and Dapper",
     description:
       "Data access with EF Core, LINQ and Dapper: modeling, migrations, query shaping, and performance-aware persistence.",
-    rating: 4,
+    rating: 5,
     icon: Icons.dotnet,
   },
   {
@@ -55,14 +55,14 @@ export const skillsUnsorted: skillsInterface[] = [
     description:
       "Relational data modeling and practical querying: joins, indexing basics, and optimizing heavy-data workflows.",
     rating: 4,
-    icon: Icons.postgresql,
+    icon: Icons.database,
   },
   {
     name: "Background Jobs (Hosted Services, Quartz)",
     description:
       "Design and implementation of scheduled and recurring background jobs with idempotency, retries, concurrency control, and operational safety.",
     rating: 4,
-    icon: Icons.temporal,
+    icon: Icons.job,
   },
   {
     name: "Temporal (Workflows & Activities)",

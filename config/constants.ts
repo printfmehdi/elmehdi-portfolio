@@ -33,7 +33,16 @@ export type ValidSkills =
   | "Shell"
   | "Singularity"
   | "Scrum"
-  | "UML";
+  | "UML"
+  | "Software Engineering"
+  | "Algorithms"
+  | "Data Structures"
+  | "Databases"
+  | "Object-Oriented Programming"
+  | "Mathematics"
+  | "Physics"
+  | "Analytical Thinking"
+  | "Problem Solving"
 
 export type ValidCategory =
   | "Backend"

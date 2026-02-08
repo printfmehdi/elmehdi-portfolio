@@ -33,7 +33,10 @@ import {
   Zap,
 } from "lucide-react";
 import { AiFillStar } from "react-icons/ai";
+import { CalendarSync } from 'lucide-react';
 import { BiLaugh, BiSolidUser } from "react-icons/bi";
+import { Lock } from "lucide-react";
+import { Database } from 'lucide-react';
 import { BsInfoCircle, BsQuestionCircle } from "react-icons/bs";
 import {
   HiBriefcase,
@@ -101,6 +104,9 @@ export const Icons = {
   help: HelpCircle,
   pizza: Pizza,
   sun: SunMedium,
+  security: Lock,
+  database: Database,
+  job: CalendarSync,
   moon: Moon,
   laptop: Laptop,
   menu: Menu,
