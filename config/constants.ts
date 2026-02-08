@@ -43,6 +43,9 @@ export type ValidSkills =
   | "Physics"
   | "Analytical Thinking"
   | "Problem Solving"
+  | "Clean Architecture"
+  | "Quartz"
+  | "Temporal"
 
 export type ValidCategory =
   | "Backend"

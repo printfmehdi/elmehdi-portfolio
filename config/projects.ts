@@ -35,7 +35,7 @@ export const Projects: ProjectInterface[] = [
     type: "Professional",
     category: ["Backend", "Web Dev"],
     shortDescription:
-      "Backend development for a multi-tenant enterprise platform for mobile device and telecom contract management, focusing on reliability, security, and scalable workflows.",
+  "Enterprise backend development for a multi-tenant telecom and device management platform, focusing on distributed workflows, tenant isolation, and production-grade reliability.",
     websiteLink: "https://www.tkdeutschland.de/",
     techStack: [
       "C#",
@@ -56,39 +56,57 @@ export const Projects: ProjectInterface[] = [
     startDate: new Date("2024-08-01"),
     endDate: new Date("2027-01-01"),
     companyLogoImg: "/experience/tkd-logo.png",
-    pagesInfoArr: [
-      {
-        title: "Backend APIs & Integrations",
-        description:
-          "Designed backend APIs and integrations with external services, emphasizing tenant isolation, robust error handling, and stable contracts.",
-        imgArr: ["/projects/tkd360/api.webp"],
-      },
-      {
-        title: "Workflows & Background Processing",
-        description:
-          "Implemented reliable background processing using jobs, webhooks, and workflow orchestration with retries, timeouts, and idempotency.",
-        imgArr: ["/projects/tkd360/workflows.webp"],
-      },
-      {
-        title: "Observability & Operations",
-        description:
-          "Improved diagnosability with structured logging and monitoring/tracing for production-grade reliability.",
-        imgArr: ["/projects/tkd360/observability.webp"],
-      },
+   pagesInfoArr: [
+  {
+    title: "Backend APIs & Multi-Tenancy",
+    description:
+      "Designed and evolved tenant-aware REST APIs with strict data isolation, validation, and backward-compatible contracts in a large enterprise environment.",
+    imgArr: [
+      "/projects/tkd360/api-architecture.webp",
+      "/projects/tkd360/tenant-isolation.webp",
     ],
-    descriptionDetails: {
-      paragraphs: [
-        "In my role at TKD, I work on a multi-tenant enterprise backend that powers workflows around device and telecom contract management.",
-        "My focus is building reliable and secure services: stable APIs, safe tenant boundaries, and operationally sound background processing.",
-        "I also contribute to production readiness by improving observability using structured logging, monitoring, and tracing to shorten incident resolution time.",
-      ],
-      bullets: [
-        "Built and maintained tenant-aware backend APIs with consistent contracts and strong validation/error handling.",
-        "Implemented background processing and workflow orchestration with retries/timeouts and idempotency in mind.",
-        "Worked on secure configuration and access control patterns to prevent cross-tenant visibility.",
-        "Improved production diagnosability using structured logging (Serilog) and monitoring/tracing (Datadog, Grafana, Elastic Stack).",
-      ],
-    },
+  },
+  {
+    title: "Distributed Workflows & Temporal",
+    description:
+      "Implemented long-running, stateful workflows using Temporal to orchestrate telecom-related processes with retries, timeouts, and deterministic execution.",
+    imgArr: [
+      "/projects/tkd360/temporal-workflow.webp",
+      "/projects/tkd360/event-flow.webp",
+    ],
+  },
+  {
+    title: "Webhooks & Background Processing",
+    description:
+      "Built resilient webhook handlers and background jobs with idempotency and failure recovery to safely process external system callbacks.",
+    imgArr: [
+      "/projects/tkd360/webhook-flow.webp",
+    ],
+  },
+  {
+    title: "Observability & Production Readiness",
+    description:
+      "Improved operational safety through structured logging, metrics, and tracing to diagnose issues in distributed, production-critical systems.",
+    imgArr: [
+      "/projects/tkd360/observability-stack.webp",
+    ],
+  },
+],
+   descriptionDetails: {
+  paragraphs: [
+    "At TKD360, I work on a large-scale, multi-tenant backend platform that manages complex workflows around mobile devices and telecommunications contracts.",
+    "My role focuses on building reliable distributed systems: stable APIs, strict tenant boundaries, and long-running workflows that must remain correct under failure conditions.",
+    "A significant part of my work involves production readiness — ensuring systems are observable, debuggable, and resilient in real-world enterprise environments.",
+  ],
+  bullets: [
+    "Designed and maintained tenant-isolated backend APIs with strong validation and consistent contracts.",
+    "Implemented long-running workflows using Temporal with retries, timeouts, and deterministic execution.",
+    "Built idempotent webhook handlers and background jobs for external system integrations.",
+    "Worked under a strict pull request and code review process, focusing on correctness, edge cases, and maintainability.",
+    "Improved production diagnosability using structured logging and monitoring (Grafana, Elastic Stack).",
+  ],
+},
+
   },
 
   // ✅ Personal: Döner ordering system (your side project)
