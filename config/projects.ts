@@ -30,108 +30,108 @@ export interface ProjectInterface {
 
 export const Projects: ProjectInterface[] = [
   // ✅ Professional: TKD360 (safe, portfolio-friendly wording)
-  {
-    id: "tkd360-enterprise-platform",
-    companyName: "TKD360 – Multi-Tenant Enterprise Platform",
-    type: "Professional",
-    category: ["Backend", "Web Dev"],
-    shortDescription:
-  "Enterprise backend development for a multi-tenant telecom and device management platform, focusing on distributed workflows, tenant isolation, and production-grade reliability.",
-    websiteLink: "https://www.tkdeutschland.de/",
-    techStack: [
-      "C#",
-      ".NET",
-      "ASP.NET Core",
-      "Entity Framework Core",
-      "LINQ",
-      "SQL",
-      "PostgreSQL",
-      "MSSQL",
-      "Docker",
-      "Git",
-      "CI/CD",
-      "Swagger",
-      "Elastic Stack",
-      "Grafana",
-    ],
-    startDate: new Date("2024-08-01"),
-    endDate: new Date("2027-01-01"),
-    companyLogoImg: "/experience/tkd-logo.png",
-  pagesInfoArr: [
-  {
-    title: "Backend APIs & Multi-Tenancy",
-    description:
-      "Designed and evolved tenant-aware REST APIs with strict data isolation, validation, and backward-compatible contracts in a large enterprise environment.",
-    mermaid: `flowchart TD
-      C[Client App] --> API[ASP.NET Core API]
-      API --> TC[Tenant Context Resolution]
-      API --> AUTH[Permission and Role Checks]
-      TC --> APP[Application and Domain Services]
-      AUTH --> APP
-      APP --> REPO[Repository Layer]
-      REPO --> EF[Entity Framework Core]
-      EF --> GF[Global Query Filters by Tenant]
-      GF --> DB[(PostgreSQL / MSSQL)]
-      APP --> AUDIT[Audit and Access Policies]
-      AUDIT --> DB
-      NOTE[Tenant-isolated and permission-aware access path] -.-> APP`,
-    imgArr: [],
-  },
-  {
-    title: "Distributed Workflows & Temporal",
-    description:
-      "Implemented long-running, stateful workflows using Temporal to orchestrate telecom-related processes with retries, timeouts, and deterministic execution.",
-    mermaid: `flowchart TD
-      TRG[Business Trigger] --> WF[Temporal Workflow]
-      WF --> PLAN[Deterministic Workflow Logic]
-      PLAN --> A1[Activity: Validate Input]
-      PLAN --> A2[Activity: Execute Step]
-      PLAN --> A3[Activity: Persist Outcome]
-      A1 --> RETRY[Retry Policy]
-      A2 --> RETRY
-      A3 --> RETRY
-      RETRY --> TMO[Timeout and Backoff Rules]
-      TMO --> WF
-      WF --> OK[Completed State]
-      WF --> FAIL[Failure Handling and Compensation]
-      FAIL --> ALERT[Operational Alerting]`,
-    imgArr: [],
-  },
-  {
-    title: "Webhooks & Background Processing",
-    description:
-      "Built resilient webhook handlers and background jobs with idempotency and failure recovery to safely process external system callbacks.",
-    mermaid: `flowchart TD
-      EXT[External System] --> WH[Webhook Endpoint]
-      WH --> VAL[Signature and Payload Validation]
-      VAL --> IDEMP[Idempotency Check]
-      IDEMP --> QUEUE[Durable Job Queue]
-      QUEUE --> JOB[Background Worker]
-      JOB --> RULES[Business Rules Processing]
-      RULES --> STATE[State Update]
-      STATE --> STORE[(Transactional Store)]
-      JOB --> RETRY[Retry and Dead-Letter Strategy]
-      RETRY --> OBS[Operational Monitoring]
-      IDEMP --> SKIP[Duplicate Event Ignored]`,
-    imgArr: [],
-  },
-],
-   descriptionDetails: {
-  paragraphs: [
-    "At TKD360, I work on a large-scale, multi-tenant backend platform that manages complex workflows around mobile devices and telecommunications contracts.",
-    "My role focuses on building reliable distributed systems: stable APIs, strict tenant boundaries, and long-running workflows that must remain correct under failure conditions.",
-    "A significant part of my work involves production readiness — ensuring systems are observable, debuggable, and resilient in real-world enterprise environments.",
-  ],
-  bullets: [
-    "Designed and maintained tenant-isolated backend APIs with strong validation and consistent contracts.",
-    "Implemented long-running workflows using Temporal with retries, timeouts, and deterministic execution.",
-    "Built idempotent webhook handlers and background jobs for external system integrations.",
-    "Worked under a strict pull request and code review process, focusing on correctness, edge cases, and maintainability.",
-    "Improved production diagnosability using structured logging and monitoring (Grafana, Elastic Stack).",
-  ],
-},
+//   {
+//     id: "tkd360-enterprise-platform",
+//     companyName: "TKD360 – Multi-Tenant Enterprise Platform",
+//     type: "Professional",
+//     category: ["Backend", "Web Dev"],
+//     shortDescription:
+//   "Enterprise backend development for a multi-tenant telecom and device management platform, focusing on distributed workflows, tenant isolation, and production-grade reliability.",
+//     websiteLink: "https://www.tkdeutschland.de/",
+//     techStack: [
+//       "C#",
+//       ".NET",
+//       "ASP.NET Core",
+//       "Entity Framework Core",
+//       "LINQ",
+//       "SQL",
+//       "PostgreSQL",
+//       "MSSQL",
+//       "Docker",
+//       "Git",
+//       "CI/CD",
+//       "Swagger",
+//       "Elastic Stack",
+//       "Grafana",
+//     ],
+//     startDate: new Date("2024-08-01"),
+//     endDate: new Date("2027-01-01"),
+//     companyLogoImg: "/experience/tkd-logo.png",
+//   pagesInfoArr: [
+//   {
+//     title: "Backend APIs & Multi-Tenancy",
+//     description:
+//       "Designed and evolved tenant-aware REST APIs with strict data isolation, validation, and backward-compatible contracts in a large enterprise environment.",
+//     mermaid: `flowchart TD
+//       C[Client App] --> API[ASP.NET Core API]
+//       API --> TC[Tenant Context Resolution]
+//       API --> AUTH[Permission and Role Checks]
+//       TC --> APP[Application and Domain Services]
+//       AUTH --> APP
+//       APP --> REPO[Repository Layer]
+//       REPO --> EF[Entity Framework Core]
+//       EF --> GF[Global Query Filters by Tenant]
+//       GF --> DB[(PostgreSQL / MSSQL)]
+//       APP --> AUDIT[Audit and Access Policies]
+//       AUDIT --> DB
+//       NOTE[Tenant-isolated and permission-aware access path] -.-> APP`,
+//     imgArr: [],
+//   },
+//   {
+//     title: "Distributed Workflows & Temporal",
+//     description:
+//       "Implemented long-running, stateful workflows using Temporal to orchestrate telecom-related processes with retries, timeouts, and deterministic execution.",
+//     mermaid: `flowchart TD
+//       TRG[Business Trigger] --> WF[Temporal Workflow]
+//       WF --> PLAN[Deterministic Workflow Logic]
+//       PLAN --> A1[Activity: Validate Input]
+//       PLAN --> A2[Activity: Execute Step]
+//       PLAN --> A3[Activity: Persist Outcome]
+//       A1 --> RETRY[Retry Policy]
+//       A2 --> RETRY
+//       A3 --> RETRY
+//       RETRY --> TMO[Timeout and Backoff Rules]
+//       TMO --> WF
+//       WF --> OK[Completed State]
+//       WF --> FAIL[Failure Handling and Compensation]
+//       FAIL --> ALERT[Operational Alerting]`,
+//     imgArr: [],
+//   },
+//   {
+//     title: "Webhooks & Background Processing",
+//     description:
+//       "Built resilient webhook handlers and background jobs with idempotency and failure recovery to safely process external system callbacks.",
+//     mermaid: `flowchart TD
+//       EXT[External System] --> WH[Webhook Endpoint]
+//       WH --> VAL[Signature and Payload Validation]
+//       VAL --> IDEMP[Idempotency Check]
+//       IDEMP --> QUEUE[Durable Job Queue]
+//       QUEUE --> JOB[Background Worker]
+//       JOB --> RULES[Business Rules Processing]
+//       RULES --> STATE[State Update]
+//       STATE --> STORE[(Transactional Store)]
+//       JOB --> RETRY[Retry and Dead-Letter Strategy]
+//       RETRY --> OBS[Operational Monitoring]
+//       IDEMP --> SKIP[Duplicate Event Ignored]`,
+//     imgArr: [],
+//   },
+// ],
+//    descriptionDetails: {
+//   paragraphs: [
+//     "At TKD360, I work on a large-scale, multi-tenant backend platform that manages complex workflows around mobile devices and telecommunications contracts.",
+//     "My role focuses on building reliable distributed systems: stable APIs, strict tenant boundaries, and long-running workflows that must remain correct under failure conditions.",
+//     "A significant part of my work involves production readiness — ensuring systems are observable, debuggable, and resilient in real-world enterprise environments.",
+//   ],
+//   bullets: [
+//     "Designed and maintained tenant-isolated backend APIs with strong validation and consistent contracts.",
+//     "Implemented long-running workflows using Temporal with retries, timeouts, and deterministic execution.",
+//     "Built idempotent webhook handlers and background jobs for external system integrations.",
+//     "Worked under a strict pull request and code review process, focusing on correctness, edge cases, and maintainability.",
+//     "Improved production diagnosability using structured logging and monitoring (Grafana, Elastic Stack).",
+//   ],
+// },
 
-  },
+//   },
 {
   id: "buhl-archive-document-management",
   companyName: "Buhl Archive – Document Management System",
