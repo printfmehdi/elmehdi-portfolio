@@ -14,59 +14,63 @@ type PagesConfig = {
 export const pagesConfig: PagesConfig = {
   home: {
     title: "Home",
-    description: "Willkommen auf meinem Portfolio.",
+    description: "Welcome to my portfolio.",
     metadata: {
       title: "El Mehdi Rahali – Portfolio",
       description:
-        "Softwareentwickler mit Schwerpunkt auf C#/.NET, Backend, REST-APIs und Clean Architecture.",
+        "Backend Software Engineer with a strong focus on C#/.NET, REST APIs, and clean architecture.",
     },
   },
   skills: {
     title: "Skills",
-    description: "Technologien und Kompetenzen, die ich in Projekten einsetze.",
+    description: "Technologies and competencies I apply in real-world projects.",
     metadata: {
       title: "Skills – El Mehdi Rahali",
-      description: "C#/.NET, ASP.NET Core, EF Core, SQL, Docker, Azure, React.",
+      description:
+        "C#/.NET, ASP.NET Core, Entity Framework Core, SQL, Docker, Kubernetes, Azure, React.",
     },
   },
   projects: {
-    title: "Projekte",
-    description: "Ausgewählte Projekte – Praxis, Uni und Eigenentwicklungen.",
+    title: "Projects",
+    description:
+      "Selected projects from professional work, university, and personal development.",
     metadata: {
-      title: "Projekte – El Mehdi Rahali",
-      description: "Döner-App, Bachelorarbeit, Monitoring-Dashboard und mehr.",
+      title: "Projects – El Mehdi Rahali",
+      description:
+        "Döner ordering system, bachelor thesis, monitoring dashboards, and more.",
     },
   },
   experience: {
-    title: "Erfahrung",
-    description: "Beruflicher Werdegang und relevante Stationen.",
+    title: "Experience",
+    description: "Professional background and relevant roles.",
     metadata: {
-      title: "Erfahrung – El Mehdi Rahali",
-      description: "TKD GmbH (Vollzeit), Buhl Data Service (Werkstudent).",
+      title: "Experience – El Mehdi Rahali",
+      description:
+        "TKD GmbH (Full-time Software Engineer), Buhl Data Service (Working Student).",
     },
   },
   contributions: {
     title: "Contributions",
-    description: "Open-Source Beiträge und Community-Aktivitäten.",
+    description: "Open-source contributions and community involvement.",
     metadata: {
       title: "Contributions – El Mehdi Rahali",
-      description: "Open-Source Beiträge und Community-Aktivitäten.",
+      description: "Open-source contributions and community involvement.",
     },
   },
   contact: {
-    title: "Kontakt",
-    description: "Schreib mir – ich freue mich über Austausch und Chancen.",
+    title: "Contact",
+    description: "Get in touch — I’m happy to connect and exchange ideas.",
     metadata: {
-      title: "Kontakt – El Mehdi Rahali",
-      description: "Kontaktmöglichkeiten: E-Mail, LinkedIn, GitHub.",
+      title: "Contact – El Mehdi Rahali",
+      description: "Ways to reach me: email, LinkedIn, GitHub.",
     },
   },
   resume: {
-    title: "Lebenslauf",
-    description: "Mein Lebenslauf als PDF.",
+    title: "Resume",
+    description: "My resume as a PDF.",
     metadata: {
-      title: "Lebenslauf – El Mehdi Rahali",
-      description: "Download CV / Resume als PDF.",
+      title: "Resume – El Mehdi Rahali",
+      description: "Download my CV / resume as a PDF.",
     },
   },
 };

@@ -74,70 +74,118 @@ export default function IndexPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
 
-      <section className="space-y-6 pb-8 pt-6 mb-0 md:pb-12 md:py-20 lg:py-32 h-screen flex items-center">
-        <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center -mt-20">
-          <Image
-            src={profileImg}
-            height={100}
-            width={100}
-            sizes="100vw"
-            className="bg-primary rounded-full mb-0 h-auto md:mb-2 w-[60%] max-w-[16rem] border-8 border-primary"
-            alt="El Mehdi Rahali – Backend Software Engineer (.NET/C#) Portfolio"
-            priority
-          />
-          <AnimatedText
-            as="h1"
-            delay={0.2}
-            className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl"
-          >
-            El Mehdi Rahali
-          </AnimatedText>
-          <AnimatedText
-            as="h3"
-            delay={0.4}
-            className="font-heading text-base sm:text-xl md:text-xl lg:text-2xl"
-          >
-            Backend Software Engineer (.NET / C#)
-          </AnimatedText>
+      <section className="relative isolate flex min-h-screen items-center overflow-hidden py-20 md:py-24 lg:py-28">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-20 top-14 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+          <div className="absolute -right-16 bottom-10 h-72 w-72 rounded-full bg-accent/40 blur-3xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsla(var(--primary),0.08),transparent_45%)]" />
+        </div>
 
-          <div className="mt-4 max-w-[42rem] text-center">
-            <p className="leading-normal text-muted-foreground text-sm sm:text-base">
-              Building scalable .NET backend systems—APIs, background jobs, and
-              enterprise integrations—with a strong focus on clean architecture
-              and reliability.
-            </p>
+        <div className="container relative">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+            <div className="order-2 text-center lg:order-1 lg:text-left">
+              <AnimatedText delay={0.1}>
+                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold tracking-[0.2em] text-primary">
+                  BACKEND ENGINEER
+                </span>
+              </AnimatedText>
+
+              <AnimatedText
+                as="h1"
+                delay={0.2}
+                className="mt-5 font-heading text-4xl leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl"
+              >
+                El Mehdi Rahali
+              </AnimatedText>
+
+              <AnimatedText
+                as="h3"
+                delay={0.35}
+                className="mt-4 font-heading text-base text-muted-foreground sm:text-lg md:text-xl"
+              >
+                Backend Software Engineer (.NET / C#)
+              </AnimatedText>
+
+              <AnimatedText
+                as="p"
+                delay={0.5}
+                className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base lg:mx-0"
+              >
+                Building scalable .NET backend systems—APIs, background jobs, and
+                enterprise integrations—with a strong focus on clean architecture
+                and reliability.
+              </AnimatedText>
+
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start">
+                {[
+                  "REST APIs",
+                  "Background Jobs",
+                  "Clean Architecture",
+                  "Enterprise Integrations",
+                ].map((badge) => (
+                  <AnimatedText key={badge} delay={0.55}>
+                    <span className="inline-flex rounded-full border bg-background/80 px-3 py-1 text-xs font-medium text-foreground/80 backdrop-blur-sm">
+                      {badge}
+                    </span>
+                  </AnimatedText>
+                ))}
+              </div>
+
+              <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
+                <AnimatedText delay={0.65}>
+                  <Link
+                    href={"/resume"}
+                    target="_blank"
+                    className={cn(
+                      buttonVariants({ size: "lg" }),
+                      "rounded-full px-7 shadow-lg shadow-primary/20"
+                    )}
+                    aria-label="View CV"
+                  >
+                    <Icons.post className="mr-2 h-4 w-4" /> Resume
+                  </Link>
+                </AnimatedText>
+                <AnimatedText delay={0.8}>
+                  <Link
+                    href={"/contact"}
+                    rel="noreferrer"
+                    className={cn(
+                      buttonVariants({
+                        variant: "outline",
+                        size: "lg",
+                      }),
+                      "rounded-full border-primary/30 bg-background/70 px-7 backdrop-blur-sm"
+                    )}
+                    aria-label="Contact El Mehdi Rahali"
+                  >
+                    <Icons.contact className="mr-2 h-4 w-4" /> Contact
+                  </Link>
+                </AnimatedText>
+              </div>
+            </div>
+
+            <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
+              <AnimatedSection delay={0.25} direction="left">
+                <div className="relative">
+                  <div className="absolute -inset-5 rounded-[2.4rem] bg-gradient-to-b from-primary/20 via-primary/10 to-transparent blur-xl" />
+                  <div className="relative rounded-[2rem] border border-primary/20 bg-background/80 p-4 shadow-2xl backdrop-blur-sm">
+                    <Image
+                      src={profileImg}
+                      height={420}
+                      width={420}
+                      sizes="(max-width: 1024px) 70vw, 420px"
+                      className="h-auto w-[16.5rem] rounded-[1.5rem] object-cover sm:w-[19rem] lg:w-[22rem]"
+                      alt="El Mehdi Rahali - Backend Software Engineer (.NET/C#) Portfolio"
+                      priority
+                    />
+                  </div>
+                </div>
+              </AnimatedSection>
+            </div>
           </div>
 
-          <div className="flex flex-col mt-10 items-center justify-center sm:flex-row sm:space-x-4 gap-3">
-            <AnimatedText delay={0.6}>
-              <Link
-                href={"/resume"}
-                target="_blank"
-                className={cn(buttonVariants({ size: "lg" }))}
-                aria-label="View CV"
-              >
-                <Icons.post className="w-4 h-4 mr-2" /> Resume
-              </Link>
-            </AnimatedText>
-            <AnimatedText delay={0.8}>
-              <Link
-                href={"/contact"}
-                rel="noreferrer"
-                className={cn(
-                  buttonVariants({
-                    variant: "outline",
-                    size: "lg",
-                  })
-                )}
-                aria-label="Contact El Mehdi Rahali"
-              >
-                <Icons.contact className="w-4 h-4 mr-2" /> Contact
-              </Link>
-            </AnimatedText>
-          </div>
-
-          <AnimatedText delay={1.2}>
-            <Icons.chevronDown className="h-6 w-6 mt-10" />
+          <AnimatedText delay={1.1} className="mt-14 flex justify-center">
+            <Icons.chevronDown className="h-6 w-6 animate-bounce text-muted-foreground" />
           </AnimatedText>
         </div>
       </section>
