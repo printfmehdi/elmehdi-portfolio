@@ -5,6 +5,7 @@ import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
 
 import { Analytics } from "@/components/common/analytics";
+import { BackendSystemBackground } from "@/components/common/backend-system-background";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { siteConfig } from "@/config/site";
@@ -122,7 +123,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             "synthwave",
           ]}
         >
-          {children}
+          <BackendSystemBackground />
+          <div className="relative z-10">{children}</div>
           <Analytics />
           <Toaster />
           <ModalProvider />
