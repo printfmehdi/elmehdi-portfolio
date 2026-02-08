@@ -1,33 +1,33 @@
 import type { MetadataRoute } from "next";
 
+import { siteConfig } from "@/config/site";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Naman Barkiya | Applied AI Engineer",
-    short_name: "Naman Barkiya",
-    description:
-      "Naman Barkiya - Applied AI Engineer working at the intersection of AI, data, and scalable software systems.",
+    name: siteConfig.name,
+    short_name: siteConfig.authorName,
+    description: siteConfig.description,
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
     theme_color: "#000000",
     icons: [
       {
-        src: "/favicon.ico",
-        sizes: "64x64",
-        type: "image/png",
+        src: siteConfig.iconIco,
+        sizes: "any",
+        type: "image/x-icon",
       },
       {
-        src: "/favicon.ico",
-        sizes: "64x64",
+        src: siteConfig.logoIcon,
+        sizes: "512x512",
         type: "image/png",
         purpose: "maskable",
       },
     ],
     categories: [
       "portfolio",
-      "ai",
-      "software engineering",
-      "machine learning",
+      "software development",
+      "backend",
       "developer",
       "web development",
     ],
