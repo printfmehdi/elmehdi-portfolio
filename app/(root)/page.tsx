@@ -134,7 +134,7 @@ export default function IndexPage() {
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
                 <AnimatedText delay={0.65}>
                   <Link
-                    href={"/resume"}
+                    href={"/resume/el-mehdi-rahali.pdf"}
                     target="_blank"
                     className={cn(
                       buttonVariants({ size: "lg" }),
