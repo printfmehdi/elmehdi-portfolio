@@ -52,7 +52,7 @@ export type ValidCategory =
   | "UI/UX"
   | "Data/ML";
 
-export type ValidExpType = "Personal" | "Professional";
+export type ValidExpType = "Personal" | "Professional" | "Academic";
 
 export type ValidPages =
   | "home"
