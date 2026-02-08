@@ -1,40 +1,42 @@
 export const siteConfig = {
-  name: "Naman Barkiya - Applied AI Engineer",
-  authorName: "Naman Barkiya",
-  username: "namanbarkiya",
+  name: "El Mehdi Rahali – Softwareentwickler C# / .NET",
+  authorName: "El Mehdi Rahali",
+  username: "printfmehdi",
   description:
-    "Naman Barkiya - Applied AI Engineer working at the intersection of AI, data, and scalable software systems. Explore my projects, experience, and contributions in software development and AI.",
-  url: "https://nbarkiya.xyz",
+    "Softwareentwickler mit Schwerpunkt auf C#/.NET und Backend-Entwicklung. Erfahrung mit Enterprise-Anwendungen, REST-APIs, Clean Architecture, CI/CD und Cloud-nahen Systemen. Aktuell Softwareentwickler bei TKD GmbH.",
+
+  url: "https://mrahali.de",
+
   links: {
-    twitter: "https://x.com/namanbarkiya",
-    github: "https://github.com/namanbarkiya",
+    github: "https://github.com/printfmehdi",
+    linkedin: "https://www.linkedin.com/in/el-mehdi-rahali",
     templateRepo: "https://github.com/namanbarkiya/minimal-next-portfolio",
   },
-  ogImage:
-    "https://res.cloudinary.com/dvt5vkfwz/image/upload/v1767384721/naman_portfolio_og_image.png",
-  iconIco:
-    "https://res.cloudinary.com/dbfvcn3f6/image/upload/v1692357384/assets/naman-favicon.ico",
-  logoIcon:
-    "https://res.cloudinary.com/dbfvcn3f6/image/upload/v1692357294/assets/naman-logo.png",
+
+  // optional, aber oft im Template genutzt:
+  ogImage: "/og-image.png",
+  iconIco: "/favicon.ico",
+  logoIcon: "/logo.png",
+
   keywords: [
-    "Naman Barkiya",
-    "Applied AI Engineer",
-    "AI Engineer",
-    "Software Engineer",
-    "Full Stack Developer",
-    "Machine Learning",
-    "Data Engineering",
-    "UBS",
-    "Python Developer",
-    "React Developer",
-    "Next.js Developer",
-    "TypeScript",
-    "Databricks",
-    "AI Startups",
-    "Software Development",
-    "Web Developer",
+    "El Mehdi Rahali",
+    "Softwareentwickler",
+    "C#",
+    ".NET",
+    "ASP.NET Core",
     "Backend Developer",
-    "Frontend Developer",
-    "Tech Portfolio",
+    "REST API",
+    "Entity Framework Core",
+    "Clean Architecture",
+    "PostgreSQL",
+    "MSSQL",
+    "Docker",
+    "Kubernetes",
+    "Azure",
+    "CI/CD",
+    "React",
+    "TypeScript",
+    "Deutschland",
+    "Siegen",
   ],
 };

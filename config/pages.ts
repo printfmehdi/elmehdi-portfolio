@@ -8,68 +8,65 @@ type PagesConfig = {
       title: string;
       description: string;
     };
-    // featuredDescription: string;
   };
 };
 
 export const pagesConfig: PagesConfig = {
   home: {
     title: "Home",
-    description: "Welcome to my portfolio website.",
+    description: "Willkommen auf meinem Portfolio.",
     metadata: {
-      title: "Home",
-      description: "Naman Barkiya's portfolio website.",
+      title: "El Mehdi Rahali – Portfolio",
+      description:
+        "Softwareentwickler mit Schwerpunkt auf C#/.NET, Backend, REST-APIs und Clean Architecture.",
     },
   },
   skills: {
     title: "Skills",
-    description: "Key skills that define my professional identity.",
+    description: "Technologien und Kompetenzen, die ich in Projekten einsetze.",
     metadata: {
-      title: "Skills",
-      description:
-        "Naman Barkiya's key skills that define his professional identity.",
+      title: "Skills – El Mehdi Rahali",
+      description: "C#/.NET, ASP.NET Core, EF Core, SQL, Docker, Azure, React.",
     },
   },
   projects: {
-    title: "Projects",
-    description: "Showcasing impactful projects and technical achievements.",
+    title: "Projekte",
+    description: "Ausgewählte Projekte – Praxis, Uni und Eigenentwicklungen.",
     metadata: {
-      title: "Projects",
-      description: "Naman Barkiya's projects in building web applications.",
+      title: "Projekte – El Mehdi Rahali",
+      description: "Döner-App, Bachelorarbeit, Monitoring-Dashboard und mehr.",
     },
   },
-  contact: {
-    title: "Contact",
-    description: "Let's connect and explore collaborations.",
+  experience: {
+    title: "Erfahrung",
+    description: "Beruflicher Werdegang und relevante Stationen.",
     metadata: {
-      title: "Contact",
-      description: "Contact Naman Barkiya.",
+      title: "Erfahrung – El Mehdi Rahali",
+      description: "TKD GmbH (Vollzeit), Buhl Data Service (Werkstudent).",
     },
   },
   contributions: {
     title: "Contributions",
-    description: "Open-source contributions and community involvement.",
+    description: "Open-Source Beiträge und Community-Aktivitäten.",
     metadata: {
-      title: "Contributions",
-      description:
-        "Naman Barkiya's open-source contributions and community involvement.",
+      title: "Contributions – El Mehdi Rahali",
+      description: "Open-Source Beiträge und Community-Aktivitäten.",
+    },
+  },
+  contact: {
+    title: "Kontakt",
+    description: "Schreib mir – ich freue mich über Austausch und Chancen.",
+    metadata: {
+      title: "Kontakt – El Mehdi Rahali",
+      description: "Kontaktmöglichkeiten: E-Mail, LinkedIn, GitHub.",
     },
   },
   resume: {
-    title: "Resume",
-    description: "Naman Barkiya's resume.",
+    title: "Lebenslauf",
+    description: "Mein Lebenslauf als PDF.",
     metadata: {
-      title: "Resume",
-      description: "Naman Barkiya's resume.",
-    },
-  },
-  experience: {
-    title: "Experience",
-    description: "Professional journey and career timeline.",
-    metadata: {
-      title: "Experience",
-      description:
-        "Naman Barkiya's professional journey and experience timeline.",
+      title: "Lebenslauf – El Mehdi Rahali",
+      description: "Download CV / Resume als PDF.",
     },
   },
 };
