@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
 import PageContainer from "@/components/common/page-container";
+import ContactInfoSidebar from "@/components/contact/contact-info-sidebar";
 import { ContactForm } from "@/components/forms/contact-form";
 import { pagesConfig } from "@/config/pages";
 
@@ -15,8 +16,11 @@ export default function ContactPage() {
       title={pagesConfig.contact.title}
       description={pagesConfig.contact.description}
     >
-      <div className="mx-auto w-full max-w-2xl">
-        <ContactForm />
+      <div className="mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
+        <section className="rounded-xl border bg-background p-5 sm:p-6">
+          <ContactForm />
+        </section>
+        <ContactInfoSidebar />
       </div>
     </PageContainer>
   );
