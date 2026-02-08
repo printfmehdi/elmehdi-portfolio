@@ -167,8 +167,8 @@ export default function IndexPage() {
             <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
               <AnimatedSection delay={0.25} direction="left">
                 <div className="relative">
-                  <div className="absolute -inset-5 rounded-[2.4rem] bg-gradient-to-b from-primary/20 via-primary/10 to-transparent blur-xl" />
-                  <div className="relative rounded-[2rem] border border-primary/20 bg-background/80 p-4 shadow-2xl backdrop-blur-sm">
+                  <div className="absolute -inset-5 rounded-[2.4rem] bg-gradient-to-b from-primary/10 via-primary/5 to-transparent blur-2xl" />
+                  <div className="relative rounded-[2rem] border border-border/50 bg-background/40 p-3 shadow-lg shadow-black/10 backdrop-blur-md">
                     <Image
                       src={profileImg}
                       height={420}
@@ -190,7 +190,8 @@ export default function IndexPage() {
         </div>
       </section>
 
-      <AnimatedSection className="container space-y-6 bg-muted py-10" id="skills">
+      <AnimatedSection   className="container space-y-6 py-16 md:py-24"
+ id="skills">
         <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
           <AnimatedText
             as="h2"
