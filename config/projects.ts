@@ -1,12 +1,13 @@
 import { ValidCategory, ValidExpType, ValidSkills } from "./constants";
 
-interface PagesInfoInterface {
+export interface PagesInfoInterface {
   title: string;
   imgArr: string[];
   description?: string;
+  mermaid?: string;
 }
 
-interface DescriptionDetailsInterface {
+export interface DescriptionDetailsInterface {
   paragraphs: string[];
   bullets: string[];
 }
@@ -56,40 +57,81 @@ export const Projects: ProjectInterface[] = [
     startDate: new Date("2024-08-01"),
     endDate: new Date("2027-01-01"),
     companyLogoImg: "/experience/tkd-logo.png",
-   pagesInfoArr: [
+  pagesInfoArr: [
   {
     title: "Backend APIs & Multi-Tenancy",
     description:
       "Designed and evolved tenant-aware REST APIs with strict data isolation, validation, and backward-compatible contracts in a large enterprise environment.",
-    imgArr: [
-      "/projects/tkd360/api-architecture.webp",
-      "/projects/tkd360/tenant-isolation.webp",
-    ],
+    mermaid: `flowchart TD
+      C[Client Applications] --> API[ASP.NET Core API]
+      API --> TC[Tenant Context Resolution]
+      API --> AUTH[Permission and Role Checks]
+      TC --> APP[Application and Domain Services]
+      AUTH --> APP
+      APP --> REPO[Repository Layer]
+      REPO --> EF[Entity Framework Core]
+      EF --> GF[Global Query Filters by Tenant]
+      GF --> DB[(PostgreSQL / MSSQL)]
+      APP --> AUDIT[Audit and Access Policies]
+      AUDIT --> DB
+      NOTE[Tenant-isolated and permission-aware access path] -.-> APP`,
+    imgArr: [],
   },
   {
     title: "Distributed Workflows & Temporal",
     description:
       "Implemented long-running, stateful workflows using Temporal to orchestrate telecom-related processes with retries, timeouts, and deterministic execution.",
-    imgArr: [
-      "/projects/tkd360/temporal-workflow.webp",
-      "/projects/tkd360/event-flow.webp",
-    ],
+    mermaid: `flowchart TD
+      TRG[Business Trigger] --> WF[Temporal Workflow]
+      WF --> PLAN[Deterministic Workflow Logic]
+      PLAN --> A1[Activity: Validate Input]
+      PLAN --> A2[Activity: Execute Step]
+      PLAN --> A3[Activity: Persist Outcome]
+      A1 --> RETRY[Retry Policy]
+      A2 --> RETRY
+      A3 --> RETRY
+      RETRY --> TMO[Timeout and Backoff Rules]
+      TMO --> WF
+      WF --> OK[Completed State]
+      WF --> FAIL[Failure Handling and Compensation]
+      FAIL --> ALERT[Operational Alerting]`,
+    imgArr: [],
   },
   {
     title: "Webhooks & Background Processing",
     description:
       "Built resilient webhook handlers and background jobs with idempotency and failure recovery to safely process external system callbacks.",
-    imgArr: [
-      "/projects/tkd360/webhook-flow.webp",
-    ],
+    mermaid: `flowchart TD
+      EXT[External System] --> WH[Webhook Endpoint]
+      WH --> VAL[Signature and Payload Validation]
+      VAL --> IDEMP[Idempotency Check]
+      IDEMP --> QUEUE[Durable Job Queue]
+      QUEUE --> JOB[Background Worker]
+      JOB --> RULES[Business Rules Processing]
+      RULES --> STATE[State Update]
+      STATE --> STORE[(Transactional Store)]
+      JOB --> RETRY[Retry and Dead-Letter Strategy]
+      RETRY --> OBS[Operational Monitoring]
+      IDEMP --> SKIP[Duplicate Event Ignored]`,
+    imgArr: [],
   },
   {
     title: "Observability & Production Readiness",
     description:
       "Improved operational safety through structured logging, metrics, and tracing to diagnose issues in distributed, production-critical systems.",
-    imgArr: [
-      "/projects/tkd360/observability-stack.webp",
-    ],
+    mermaid: `flowchart TD
+      SVC[Backend Services] --> LOG[Structured Logs]
+      SVC --> MET[Metrics]
+      SVC --> TRACE[Distributed Traces]
+      LOG --> ES[Elastic Stack]
+      MET --> GRAF[Grafana Dashboards]
+      TRACE --> GRAF
+      ES --> TRIAGE[Incident Triage]
+      GRAF --> TRIAGE
+      TRIAGE --> RCA[Root Cause Analysis]
+      RCA --> FIX[Remediation and Release]
+      FIX --> VERIFY[Post-Release Verification]`,
+    imgArr: [],
   },
 ],
    descriptionDetails: {
