@@ -160,7 +160,7 @@ export const Projects: ProjectInterface[] = [
   ],
   startDate: new Date("2021-11-01"),
   endDate: new Date("2024-06-01"),
-  companyLogoImg: "/experience/buhl-logo.png",
+  companyLogoImg: "/projects/buhlArchiv.png",
   pagesInfoArr: [
     {
       title: "Archiving & Metadata",
@@ -247,7 +247,7 @@ export const Projects: ProjectInterface[] = [
 
   startDate: new Date("2025-01-01"),
   endDate: new Date("2027-01-01"),
-  companyLogoImg: "/projects/doner/logo.png",
+  companyLogoImg: "/projects/DönerApp.png",
 
   pagesInfoArr: [
     {
@@ -438,7 +438,7 @@ export const Projects: ProjectInterface[] = [
 
   startDate: new Date("2023-10-01"),
   endDate: new Date("2024-03-01"),
-  companyLogoImg: "/projects/university/logo.png",
+  companyLogoImg: "/projects/bchelorthesis.png",
 
   pagesInfoArr: [
     {

@@ -104,7 +104,7 @@ achievements: [
       "Git",
     ],
     companyUrl: "https://www.buhl.de",
-    logo: "/experience/buhl-logo.png",
+    logo: "/experience/buhl_data_service_gmbh_logo.jpg",
   },
   {
   id: "bachelor",
@@ -127,7 +127,7 @@ achievements: [
     "Object-Oriented Programming",
   ],
   companyUrl: "https://www.uni-siegen.de",
-  logo: "/experience/university-siegen-logo.png",
+  logo: "/experience/logo.svg",
 },
 {
   id: "ensa",
@@ -148,6 +148,6 @@ achievements: [
     "Problem Solving",
   ],
   companyUrl: "https://ensaf.ac.ma/",
-  logo: "/experience/ensa-fes-logo.png",
+  logo: "/experience/ensa.jpg",
 }
 ];
