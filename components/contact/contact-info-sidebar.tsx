@@ -46,7 +46,7 @@ export default function ContactInfoSidebar() {
         <CardContent className="space-y-2 text-sm text-muted-foreground">
           <p className="flex items-center gap-2">
             <Icons.check className="h-4 w-4 text-primary" />
-            Open for backend engineering opportunities // available for freelance consulting and mentoring
+            Open for backend engineering opportunities
           </p>
           <p className="flex items-center gap-2">
             <Icons.check className="h-4 w-4 text-primary" />
