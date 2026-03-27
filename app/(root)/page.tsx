@@ -111,15 +111,13 @@ export default function IndexPage() {
                 delay={0.5}
                 className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base lg:mx-0"
               >
-                Building scalable .NET backend systems—APIs, background jobs, and
-                enterprise integrations—with a strong focus on clean architecture
-                and reliability.
-              </AnimatedText>
+                Building scalable .NET backend systems—APIs, background processing, and distributed workflows—within enterprise, multi-tenant environments, with a strong focus on clean architecture, security, and reliability.              </AnimatedText>
 
               <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start">
                 {[
-                  "REST APIs",
-                  "Background Jobs",
+                  "APIs",
+                  "Background Processing",
+                  "Distributed Systems",
                   "Clean Architecture",
                   "Enterprise Integrations",
                 ].map((badge) => (

@@ -47,6 +47,11 @@ export type ValidSkills =
   | "Quartz"
   | "Temporal"
   | "SignalR"
+  | "YARP"
+  | "Gridify"
+  | "Visual Studio"
+  | "Visual Studio Code"
+  | "JetBrains Rider";
 
 export type ValidCategory =
   | "Backend"
