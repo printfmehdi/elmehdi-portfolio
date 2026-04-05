@@ -51,7 +51,13 @@ export type ValidSkills =
   | "Gridify"
   | "Visual Studio"
   | "Visual Studio Code"
-  | "JetBrains Rider";
+  | "JetBrains Rider"
+  | "Alfresco"
+  | "CQRS"
+  | "MediatR"
+  | "Apache Kafka"
+  | "Elasticsearch"
+  | "OCR";
 
 export type ValidCategory =
   | "Backend"
