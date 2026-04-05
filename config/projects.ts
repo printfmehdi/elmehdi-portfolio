@@ -29,7 +29,7 @@ export interface ProjectInterface {
 }
 
 export const Projects: ProjectInterface[] = [
-  {
+   {
     id: "tkd360-enterprise-platform",
     companyName: "TKD360 – Multi-Tenant Enterprise Platform",
     type: "Professional",
@@ -165,6 +165,122 @@ export const Projects: ProjectInterface[] = [
     },
   },
   {
+    id: "doner-ordering-system",
+    companyName: "Döner App — Real-Time Restaurant Ordering Platform",
+    type: "Personal",
+    category: ["Full Stack", "Backend", "Web Dev"],
+    shortDescription:
+      "End-to-end real-time restaurant ordering system used in a real-world environment, featuring domain-driven design, live synchronization via SignalR, and production-ready admin tooling.",
+    githubLink: "https://github.com/printfmehdi/HerrBiggie",
+    techStack: [
+      "C#",
+      "ASP.NET Core",
+      ".NET",
+      "Entity Framework Core",
+      "PostgreSQL",
+      "SignalR",
+      "Clean Architecture",
+      "Docker",
+      "React",
+      "Swagger",
+      "CI/CD",
+      "Git",
+    ],
+    startDate: new Date("2025-01-01"),
+    endDate: new Date("2027-01-01"),
+    companyLogoImg: "/projects/DönerApp.png",
+
+    pagesInfoArr: [
+       {
+        title: "System Architecture Overview",
+        description:
+          "Designed a scalable Clean Architecture backend with strict separation of concerns. Both customer and admin applications interact with a shared API and receive real-time updates via SignalR.",
+        mermaid: `flowchart LR
+          CustomerApp[Customer Web App]
+          AdminApp[Admin Dashboard]
+          API[ASP.NET Core API]
+          DB[(PostgreSQL Database)]
+          RT[SignalR Hub]
+
+          CustomerApp -->|REST| API
+          AdminApp -->|REST| API
+          API --> DB
+          API --> RT
+          RT --> CustomerApp
+          RT --> AdminApp`,
+        imgArr: []
+      },
+      {
+        title: "Customer Ordering Experience",
+        description:
+          "Built a mobile-first ordering experience allowing customers to browse, customize, and place orders seamlessly. The checkout flow supports both online and cash payments, while real-time order updates are pushed via SignalR without polling.",
+        imgArr: [
+          "/projects/herrbiggie/Warenkorb.png",
+          "/projects/herrbiggie/bestellungen.png"
+        ]
+      },
+      {
+        title: "Advanced Product Customization",
+        description:
+          "Implemented a flexible customization system supporting ingredient-level modifications and portion sizes. Each modification dynamically impacts pricing through domain-driven rules, ensuring consistency across all clients.",
+        imgArr: [
+          "/projects/herrbiggie/zutaten.png",
+          "/projects/herrbiggie/menu.png"
+        ]
+      },
+      {
+        title: "Admin Dashboard & Live Order Management",
+        description:
+          "Designed and implemented a real-time kitchen dashboard enabling staff to manage incoming orders with zero latency. Orders are streamed via SignalR and organized into state-driven columns (Pending, Preparing, Ready, Picked Up). State transitions trigger instant synchronization across all connected clients.",
+        imgArr: [
+          "/projects/herrbiggie/admin-dashbaord.png"
+        ]
+      },
+      {
+        title: "Operational Insights & Metrics",
+        description:
+          "Developed a real-time analytics dashboard providing insights into order volume, preparation time, and product performance. Enables data-driven optimization of kitchen operations.",
+        imgArr: [
+          "/projects/herrbiggie/insights.png"
+        ]
+      },
+      {
+        title: "System Configuration & Promotions",
+        description:
+          "Implemented an admin configuration panel supporting system behavior control, including auto-refresh intervals, notification settings, and coupon management with expiration logic.",
+        imgArr: [
+          "/projects/herrbiggie/settings.png"
+        ]
+      },
+      {
+        title: "Dynamic Menu Availability",
+        description:
+          "Enabled real-time product availability management, allowing staff to toggle menu items instantly. Changes are propagated live to all connected clients, preventing invalid orders.",
+        imgArr: [
+          "/projects/herrbiggie/verfuegbarkeit.png"
+        ]
+      }
+    ],
+
+    descriptionDetails: {
+      paragraphs: [
+        "The Döner App is a full-stack system modeling a real-world restaurant workflow end-to-end — from customer ordering to kitchen operations.",
+        "The backend follows Clean Architecture principles, ensuring strict separation of concerns and testability. Business logic is encapsulated within a domain-driven design, where orders act as aggregates with explicit state transitions.",
+        "Real-time communication via SignalR ensures both customer and admin applications stay fully synchronized without polling, providing a seamless and responsive user experience.",
+      ],
+      bullets: [
+        "Architected a scalable backend using Clean Architecture (Domain, Application, Infrastructure, Web).",
+        "Implemented real-time synchronization using SignalR for instant order state updates.",
+        "Designed domain-driven order aggregates with explicit lifecycle and pricing logic.",
+        "Built advanced product customization with ingredient-level modifications and dynamic pricing.",
+        "Developed admin dashboard for real-time kitchen operations and order management.",
+        "Integrated PostgreSQL with Entity Framework Core for reliable data persistence.",
+        "Containerized backend using Docker and implemented CI/CD pipelines.",
+        "Exposed RESTful APIs with Swagger documentation consumed by React frontend.",
+      ],
+    },
+  },
+  {
     id: "buhl-archive-document-management",
     companyName: "Buhl Archive – Document Management System",
     type: "Professional",
@@ -274,179 +390,9 @@ export const Projects: ProjectInterface[] = [
     },
   },
   {
-    id: "doner-ordering-system",
-    companyName: "Döner App — Real-Time Restaurant Ordering Platform",
-    type: "Personal",
-    category: ["Full Stack", "Backend", "Web Dev"],
-    shortDescription:
-      "Real-time restaurant ordering platform with a customer-facing web app and an admin dashboard, built on Clean Architecture with domain-driven order logic, complex product customization, and live updates via SignalR.",
-    websiteLink: undefined,
-    githubLink: "https://github.com/printfmehdi/HerrBiggie",
-    techStack: [
-      "C#",
-      ".NET",
-      "ASP.NET Core",
-      "Entity Framework Core",
-      "PostgreSQL",
-      "SignalR",
-      "Clean Architecture",
-      "Docker",
-      "Git",
-      "CI/CD",
-      "React",
-      "Swagger",
-    ],
-    startDate: new Date("2025-01-01"),
-    endDate: new Date("2027-01-01"),
-    companyLogoImg: "/projects/DönerApp.png",
-    pagesInfoArr: [
-      {
-        title: "System Architecture Overview",
-        description:
-          "High-level architecture showing how the customer app and admin dashboard interact with a Clean Architecture backend, a PostgreSQL database, and a SignalR hub for real-time event broadcasting. The backend enforces domain rules centrally — both clients consume the same API surface and receive the same live updates.",
-        mermaid: `flowchart LR
-          CustomerApp[Customer Web App]
-          AdminApp[Admin Dashboard]
-          API[ASP.NET Core API]
-          DB[(PostgreSQL Database)]
-          RT[SignalR Hub]
-
-          CustomerApp -->|REST| API
-          AdminApp -->|REST| API
-          API --> DB
-          API --> RT
-          RT --> CustomerApp
-          RT --> AdminApp`,
-        imgArr: [],
-      },
-      {
-        title: "Customer Ordering Flow",
-        description:
-          "The customer journey from browsing the menu and customizing products to placing an order and tracking its status in real time. Product customization supports portion sizes and ingredient-level modifications, each with their own pricing rules. Once an order is placed, the customer receives live status updates pushed from the admin side without polling.",
-        mermaid: `flowchart LR
-          Menu[Browse Menu]
-          Customize[Customize Product]
-          Cart[Shopping Cart]
-          Place[Place Order]
-          API[Backend API]
-          Status[Realtime Status Updates via SignalR]
-
-          Menu --> Customize --> Cart --> Place --> API
-          API --> Status
-          Status --> Cart`,
-        imgArr: [],
-      },
-      {
-        title: "Clean Architecture Backend",
-        description:
-          "The backend is structured into four clearly separated layers following Clean Architecture principles. The Domain layer owns all business rules and order logic — it has no dependencies on infrastructure or delivery. The Application layer orchestrates use cases. The Infrastructure layer handles persistence and external concerns. The Web layer is the thin HTTP entry point. This structure makes the system independently testable at every layer.",
-        mermaid: `flowchart TB
-          UI[Web and API Layer]
-          App[Application Layer]
-          Domain[Domain Layer — Business Rules and Aggregates]
-          Infra[Infrastructure Layer — EF Core and PostgreSQL]
-          DB[(Database)]
-
-          UI --> App
-          App --> Domain
-          App --> Infra
-          Infra --> DB`,
-        imgArr: [],
-      },
-      {
-        title: "Admin Dashboard & Live Order Management",
-        description:
-          "The admin interface gives restaurant staff a live view of incoming orders. When a customer places an order, it appears instantly in the admin queue via SignalR. Staff can update order states (accepted, preparing, ready, completed) — each state change is immediately broadcast back to the customer app, closing the real-time feedback loop.",
-        mermaid: `flowchart LR
-          Incoming[New Customer Order]
-          Queue[Live Order Queue]
-          Update[Update Order Status]
-          API[Backend API]
-          RT[SignalR Broadcast]
-          Customer[Customer App]
-
-          Incoming --> Queue --> Update --> API
-          API --> RT --> Queue
-          RT --> Customer`,
-        imgArr: [],
-      },
-      {
-        title: "Domain Model & Order Logic",
-        description:
-          "Orders are modeled as a domain aggregate with explicit lifecycle states and encapsulated pricing logic. An OrderItem can carry multiple Modifications — ingredient additions or removals — each contributing to the final price. Pricing is computed inside the domain model, not in the application or infrastructure layer, ensuring business rules are never scattered.",
-        mermaid: `classDiagram
-          class Order {
-            Id
-            Status
-            TotalPrice
-            PlacedAt
-          }
-
-          class OrderItem {
-            ProductId
-            Quantity
-            PortionSize
-            ComputedPrice
-          }
-
-          class Modification {
-            IngredientId
-            Type
-            ExtraPrice
-          }
-
-          class Product {
-            Id
-            Name
-            BasePrice
-            IsAvailable
-          }
-
-          Order "1" --> "many" OrderItem
-          OrderItem "1" --> "many" Modification
-          OrderItem "many" --> "1" Product`,
-        imgArr: [],
-      },
-      {
-        title: "Key Engineering Challenges",
-        description:
-          "The three main technical challenges — order state consistency, real-time synchronization between client apps, and complex pricing logic for customizable products — each guided an architectural decision. Domain events drive state transitions, SignalR broadcasts propagate changes, and pricing logic is fully encapsulated in the domain model.",
-        mermaid: `flowchart TB
-          C1[Order State Consistency]
-          C2[Realtime Synchronization Across Clients]
-          C3[Customization and Pricing Complexity]
-
-          C1 --> S1[Domain Aggregate with Explicit State Machine]
-          C2 --> S2[SignalR Hub Broadcasts on State Change]
-          C3 --> S3[Pricing Encapsulated in Domain Model]
-
-          S1 --> APP[Application Layer Orchestrates]
-          S2 --> HUB[SignalR Hub]
-          S3 --> DOM[Domain Model — No Pricing Logic Leaks]`,
-        imgArr: [],
-      },
-    ],
-    descriptionDetails: {
-      paragraphs: [
-        "The Döner App is a personal project that models a real restaurant's ordering workflow end-to-end — from a customer-facing ordering experience to a live admin dashboard for restaurant staff.",
-        "The backend is built on Clean Architecture, keeping business rules in a pure domain layer that is fully independent of infrastructure and delivery concerns. Orders are domain aggregates with explicit state transitions, and pricing for customizable products is computed entirely within the domain model.",
-        "Real-time communication is handled via SignalR, so both the customer app and the admin dashboard reflect order and availability changes instantly — without polling. The project was also an opportunity to apply production-level practices like CI/CD, Dockerization, and a proper API contract with Swagger documentation.",
-      ],
-      bullets: [
-        "Clean Architecture with strict layer separation: Domain, Application, Infrastructure, and Web.",
-        "Domain-driven order aggregate with explicit lifecycle states and encapsulated pricing rules.",
-        "Real-time order and availability updates pushed to all connected clients via SignalR.",
-        "Complex product customization support — portion sizes and ingredient-level modifications with per-modification pricing.",
-        "Dockerized backend for consistent local development and deployment.",
-        "Full API documentation via Swagger with React frontend consuming REST endpoints.",
-        "Scalable foundation supporting multi-restaurant or multi-location extension.",
-      ],
-    },
-  },
-  {
     id: "bachelor-thesis",
     companyName: "Bachelor Thesis — Feature Model Learning & Dimensionality Reduction",
-    type: "Academic",
+    type: "Personal",
     category: ["Machine Learning", "Backend"],
     shortDescription:
       "Research-oriented bachelor thesis on Feature Model Learning in Software Product Lines — investigating encoding strategies and dimensionality reduction techniques (Linear PCA, Logistic PCA) to improve the scalability and accuracy of configuration space learning.",
