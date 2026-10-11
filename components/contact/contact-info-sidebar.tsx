@@ -50,7 +50,7 @@ export default function ContactInfoSidebar() {
           </p>
           <p className="flex items-center gap-2">
             <Icons.check className="h-4 w-4 text-primary" />
-            Location: Siegen, Germany — open to relocation and remote
+            Location: Düsseldorf, Germany — open to relocation and remote
           </p>
         </CardContent>
       </Card>

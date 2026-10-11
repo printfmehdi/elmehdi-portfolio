@@ -37,5 +37,6 @@ export const siteConfig = {
     "TypeScript",
     "Deutschland",
     "Siegen",
+    "Düsseldorf",
   ],
 };
