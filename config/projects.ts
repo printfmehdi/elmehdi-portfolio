@@ -281,6 +281,123 @@ export const Projects: ProjectInterface[] = [
     },
   },
   {
+    id: "9rayti-study-platform",
+    companyName: "9rayti — Study Platform for Moroccan University Students",
+    type: "Personal",
+    category: ["Full Stack", "Backend", "Web Dev"],
+    shortDescription:
+      "Course-centric study platform where Moroccan university students share, find and discuss study material — built as a Clean Architecture modular monolith with a secure upload pipeline, full-text search, document-anchored discussions and a reputation system.",
+    techStack: [
+      "C#",
+      ".NET",
+      "ASP.NET Core",
+      "Entity Framework Core",
+      "MSSQL",
+      "Clean Architecture",
+      "CQRS",
+      "FluentValidation",
+      ".NET Aspire",
+      "MinIO",
+      "ClamAV",
+      "Docker",
+      "xUnit",
+      "GitHub Actions",
+      "React",
+      "Typescript",
+      "TanStack Query",
+      "Tailwind CSS",
+      "Git",
+    ],
+    startDate: new Date("2026-04-01"),
+    endDate: new Date("2027-01-01"),
+    companyLogoImg: "/projects/9rayti.svg",
+    pagesInfoArr: [
+      {
+        title: "Modular Monolith & Request Flow",
+        description:
+          "The backend is a Clean Architecture modular monolith (Api, Application, Domain, Infrastructure, SharedKernel). Controllers only talk to a custom command/query dispatcher; requests pass FluentValidation before reaching their handler. Side effects such as reputation points, notifications and search re-indexing never run inline — they are raised as domain events, written to a transactional outbox and processed asynchronously.",
+        mermaid: `flowchart LR
+          SPA[React SPA] --> API[ASP.NET Core Controllers]
+          API --> DISP[Command / Query Dispatcher]
+          DISP --> VAL[FluentValidation]
+          VAL --> H[Handlers]
+          H --> REPO[Repositories / EF Core]
+          REPO --> DB[(SQL Server)]
+          H --> EV[Domain Events]
+          EV --> OUT[(Outbox Table)]
+          OUT --> PROC[Outbox Processor]
+          PROC --> REP[Reputation]
+          PROC --> NOTIF[Notifications]
+          PROC --> IDX[Search Indexing]`,
+        imgArr: [],
+      },
+      {
+        title: "Secure Upload & Ingestion Pipeline",
+        description:
+          "Untrusted user files never reach public storage unchecked. Uploads land in a quarantine bucket, are scanned by ClamAV, inspected with PdfPig, matched against a SHA-256 blocklist and only then promoted to the originals bucket. A background worker derives thumbnails, rejected files are purged, and downloads are served through short-lived signed S3 URLs.",
+        mermaid: `flowchart TD
+          UP[Multipart Upload] --> Q[(Quarantine Bucket)]
+          Q --> SCAN[ClamAV Virus Scan]
+          SCAN --> INSP[PdfPig Inspection]
+          INSP --> HASH[SHA-256 Blocklist Check]
+          HASH -->|valid| PROM[Promote to Originals]
+          HASH -->|rejected| PURGE[Purge File]
+          PROM --> THUMB[Derive Thumbnails]
+          THUMB --> DER[(Derived Bucket)]
+          PROM --> SIGNED[Signed URL Downloads]`,
+        imgArr: [],
+      },
+      {
+        title: "Search & Discovery",
+        description:
+          "A dedicated search projection is kept current by a background indexing worker. Queries use SQL Server Full-Text Search with an automatic LIKE fallback when Full-Text is not installed, and support facets, ranking, highlighting and autocomplete. On top of that, students get a personalised \"for you\" feed, trends and a leaderboard.",
+        mermaid: `flowchart LR
+          EV[Document Events] --> JOB[Search Index Jobs]
+          JOB --> W[Search Index Worker]
+          W --> PROJ[(Search Projection)]
+          Q[Search Query] --> PROV{Full-Text available?}
+          PROV -->|yes| FTS[SQL Server Full-Text]
+          PROV -->|no| LIKE[LIKE Fallback]
+          FTS --> PROJ
+          LIKE --> PROJ
+          PROJ --> RES[Facets, Ranking, Autocomplete]`,
+        imgArr: [],
+      },
+      {
+        title: "Discussions, Reputation & Moderation",
+        description:
+          "Documents are the social object of the platform. Students can open discussions anchored to a highlighted passage of a PDF or at course level, reply, upvote, @mention others, subscribe and mark accepted answers. Contributions earn reputation points via outbox handlers, in-app notifications keep users engaged, and admins can lock or hide threads and work through a report queue.",
+        mermaid: `flowchart TD
+          DOC[Document Viewer] --> SEL[Text Selection]
+          SEL --> DISC[Anchored Discussion]
+          DISC --> REP[Replies, Upvotes, Mentions]
+          REP --> ACC[Accepted Answer]
+          ACC --> EVT[Domain Events]
+          EVT --> PTS[Reputation Points]
+          EVT --> NOT[Notifications]
+          REP --> RPT[Reports]
+          RPT --> MOD[Admin Moderation Queue]`,
+        imgArr: [],
+      },
+    ],
+    descriptionDetails: {
+      paragraphs: [
+        "9rayti is a study platform for Moroccan university students, inspired by StudyDrive and adapted to Moroccan universities. Students share, discover, organise and discuss course-specific material such as lecture notes, exercises, exams and summaries.",
+        "The backend is an ASP.NET Core (.NET 10) modular monolith following Clean Architecture, with EF Core on SQL Server, S3-compatible object storage (MinIO) and a local development environment orchestrated by .NET Aspire. Asynchronous side effects run through a transactional outbox and in-process background workers.",
+        "The React 19 frontend is mobile-first and localised (French first, Arabic in progress), built with Vite, React Router, TanStack Query, React Hook Form, Zod and Tailwind CSS. Every pull request is built, linted and tested in GitHub Actions.",
+      ],
+      bullets: [
+        "Designed a Clean Architecture modular monolith with a custom command/query dispatcher and FluentValidation pipeline.",
+        "Implemented a transactional outbox with domain events so reputation, notifications and search indexing never run inline in requests.",
+        "Built a secure upload pipeline: quarantine → ClamAV scan → PDF inspection → SHA-256 blocklist → promotion → thumbnails.",
+        "Implemented search with a projection table, background indexer, SQL Server Full-Text and a LIKE fallback, plus facets and autocomplete.",
+        "Developed document-anchored and course-level discussions with replies, upvotes, mentions, accepted answers and moderation.",
+        "Added JWT authentication with HttpOnly refresh-token cookies, session management, rate limiting and role-based admin access.",
+        "Set up CI with GitHub Actions for backend build and integration tests and frontend lint, test and build.",
+      ],
+    },
+  },
+  {
     id: "buhl-archive-document-management",
     companyName: "Buhl Archive – Document Management System",
     type: "Professional",

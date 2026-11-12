@@ -57,7 +57,15 @@ export type ValidSkills =
   | "MediatR"
   | "Apache Kafka"
   | "Elasticsearch"
-  | "OCR";
+  | "OCR"
+  | ".NET Aspire"
+  | "MinIO"
+  | "ClamAV"
+  | "FluentValidation"
+  | "xUnit"
+  | "GitHub Actions"
+  | "TanStack Query"
+  | "Tailwind CSS";
 
 export type ValidCategory =
   | "Backend"

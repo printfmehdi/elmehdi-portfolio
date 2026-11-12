@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { Icons } from "@/components/common/icons";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SocialLinks } from "@/config/socials";
@@ -36,22 +35,6 @@ export default function ContactInfoSidebar() {
               <span className="text-xs text-muted-foreground">{item.username}</span>
             </Link>
           ))}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="pb-4">
-          <CardTitle className="font-heading text-xl">Availability</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm text-muted-foreground">
-          <p className="flex items-center gap-2">
-            <Icons.check className="h-4 w-4 text-primary" />
-            Open for backend engineering opportunities
-          </p>
-          <p className="flex items-center gap-2">
-            <Icons.check className="h-4 w-4 text-primary" />
-            Location: Düsseldorf, Germany — open to relocation and remote
-          </p>
         </CardContent>
       </Card>
     </aside>

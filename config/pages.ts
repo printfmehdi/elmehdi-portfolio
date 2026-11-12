@@ -37,7 +37,7 @@ export const pagesConfig: PagesConfig = {
     metadata: {
       title: "Projects – El Mehdi Rahali",
       description:
-        "Döner ordering system, bachelor thesis, monitoring dashboards, and more.",
+        "9rayti study platform, Döner ordering system, bachelor thesis, and more.",
     },
   },
   experience: {
