@@ -1,20 +1,21 @@
 interface PageHeaderProps {
   title: string;
   description: string;
+  eyebrow?: string;
 }
 
-export default function PageHeader({ title, description }: PageHeaderProps) {
+export default function PageHeader({ title, description, eyebrow }: PageHeaderProps) {
   return (
-    <>
-      <div className="flex flex-col mt-5 items-start gap-4 md:flex-row md:justify-between md:gap-8">
-        <div className="flex-1 space-y-4">
-          <h1 className="inline-block font-heading text-4xl tracking-tight lg:text-5xl capitalize ">
-            {title}
-          </h1>
-          <p className="text-lg text-muted-foreground">{description}</p>
-        </div>
-      </div>
-      <hr className="my-6" />
-    </>
+    <div className="border-b pb-10 pt-12 md:pt-16">
+      {eyebrow ? (
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          {eyebrow}
+        </p>
+      ) : null}
+      <h1 className="font-heading text-4xl tracking-tight md:text-5xl">{title}</h1>
+      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+        {description}
+      </p>
+    </div>
   );
 }

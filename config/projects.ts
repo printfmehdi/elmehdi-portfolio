@@ -23,6 +23,8 @@ export interface ProjectInterface {
   techStack: ValidSkills[];
   startDate: Date;
   endDate: Date;
+  /** Ongoing projects show "Present" instead of an end date. */
+  ongoing?: boolean;
   companyLogoImg: any;
   descriptionDetails: DescriptionDetailsInterface;
   pagesInfoArr: PagesInfoInterface[];
@@ -55,6 +57,7 @@ export const Projects: ProjectInterface[] = [
     ],
     startDate: new Date("2024-08-01"),
     endDate: new Date("2027-01-01"),
+    ongoing: true,
     companyLogoImg: "/projects/tkd.png",
     pagesInfoArr: [
       {
@@ -166,7 +169,7 @@ export const Projects: ProjectInterface[] = [
   },
   {
     id: "doner-ordering-system",
-    companyName: "Döner App — Real-Time Restaurant Ordering Platform",
+    companyName: "Restaurant SaaS — Real-Time Ordering Platform",
     type: "Personal",
     category: ["Full Stack", "Backend", "Web Dev"],
     shortDescription:
@@ -188,6 +191,7 @@ export const Projects: ProjectInterface[] = [
     ],
     startDate: new Date("2025-01-01"),
     endDate: new Date("2027-01-01"),
+    ongoing: true,
     companyLogoImg: "/projects/DönerApp.png",
 
     pagesInfoArr: [
@@ -264,7 +268,7 @@ export const Projects: ProjectInterface[] = [
 
     descriptionDetails: {
       paragraphs: [
-        "The Döner App is a full-stack system modeling a real-world restaurant workflow end-to-end — from customer ordering to kitchen operations.",
+        "This restaurant SaaS is a full-stack system modeling a real-world restaurant workflow end-to-end — from customer ordering to kitchen operations.",
         "The backend follows Clean Architecture principles, ensuring strict separation of concerns and testability. Business logic is encapsulated within a domain-driven design, where orders act as aggregates with explicit state transitions.",
         "Real-time communication via SignalR ensures both customer and admin applications stay fully synchronized without polling, providing a seamless and responsive user experience.",
       ],
@@ -282,7 +286,7 @@ export const Projects: ProjectInterface[] = [
   },
   {
     id: "9rayti-study-platform",
-    companyName: "9rayti — Study Platform for Moroccan University Students",
+    companyName: "9rayti — EdTech Study Platform",
     type: "Personal",
     category: ["Full Stack", "Backend", "Web Dev"],
     shortDescription:
@@ -310,6 +314,7 @@ export const Projects: ProjectInterface[] = [
     ],
     startDate: new Date("2026-04-01"),
     endDate: new Date("2027-01-01"),
+    ongoing: true,
     companyLogoImg: "/projects/9rayti.svg",
     pagesInfoArr: [
       {
@@ -507,15 +512,70 @@ export const Projects: ProjectInterface[] = [
     },
   },
   {
+    id: "ai-video-automation",
+    companyName: "AI Video Automation System",
+    type: "Personal",
+    category: ["AI", "Backend"],
+    shortDescription:
+      "Pipeline that turns an idea into a finished, AI-generated video — LLM-based agents write the script, text-to-speech voices it and an automated media pipeline renders the result.",
+    techStack: ["Python", "LLM APIs", "AI Agents", "TTS", "FFmpeg", "Git"],
+    startDate: new Date("2025-09-01"),
+    endDate: new Date("2027-01-01"),
+    ongoing: true,
+    companyLogoImg: "/projects/ai-video.svg",
+    pagesInfoArr: [
+      {
+        title: "Agent Pipeline",
+        description:
+          "The system is composed of specialised LLM-based agents. A planning agent turns a topic into a structured outline, a writing agent produces the script, and downstream steps generate voice-over, visuals and the final render. Each step has a clear input/output contract so steps can be retried or swapped independently.",
+        mermaid: `flowchart LR
+          IDEA[Topic / Idea] --> PLAN[Planning Agent]
+          PLAN --> SCRIPT[Script Agent]
+          SCRIPT --> TTS[Text-to-Speech]
+          SCRIPT --> VIS[Visual Generation]
+          TTS --> RENDER[FFmpeg Render]
+          VIS --> RENDER
+          RENDER --> OUT[Finished Video]`,
+        imgArr: [],
+      },
+      {
+        title: "Reliability & Error Handling",
+        description:
+          "External AI and media APIs fail in many creative ways — timeouts, rate limits, malformed output. The pipeline stabilises these integrations with retries and backoff, output validation between steps, and resumable jobs so a failure late in the pipeline does not throw away earlier, expensive work.",
+        mermaid: `flowchart TD
+          STEP[Pipeline Step] --> CALL[External API Call]
+          CALL -->|ok| VALID[Validate Output]
+          CALL -->|error| RETRY[Retry with Backoff]
+          RETRY --> CALL
+          VALID -->|invalid| RETRY
+          VALID -->|valid| CKPT[Persist Checkpoint]
+          CKPT --> NEXT[Next Step]`,
+        imgArr: [],
+      },
+    ],
+    descriptionDetails: {
+      paragraphs: [
+        "An ongoing side project exploring how far AI agents can take content production end-to-end: from a short topic to a finished video, without manual editing.",
+        "The interesting engineering problems are the same ones I solve in backend systems at work — orchestrating multi-step workflows over unreliable external services, keeping steps idempotent and resumable, and making failures visible.",
+      ],
+      bullets: [
+        "Designed LLM-based agents for content planning, script writing and media generation.",
+        "Integrated text-to-speech and media processing (FFmpeg) into an automated rendering pipeline.",
+        "Improved reliability by stabilising API integrations and handling asynchronous failure cases.",
+        "Structured the pipeline into resumable steps with validated inputs and outputs.",
+      ],
+    },
+  },
+  {
     id: "bachelor-thesis",
     companyName: "Bachelor Thesis — Feature Model Learning & Dimensionality Reduction",
-    type: "Personal",
-    category: ["Machine Learning", "Backend"],
+    type: "Academic",
+    category: ["Machine Learning", "Data/ML"],
     shortDescription:
       "Research-oriented bachelor thesis on Feature Model Learning in Software Product Lines — investigating encoding strategies and dimensionality reduction techniques (Linear PCA, Logistic PCA) to improve the scalability and accuracy of configuration space learning.",
     websiteLink: "/projects/university/bachelor-thesis.pdf",
     githubLink: undefined,
-    techStack: [],
+    techStack: ["Python", "R", "AutoML", "Shell", "Singularity", "Git"],
     startDate: new Date("2023-10-01"),
     endDate: new Date("2024-03-01"),
     companyLogoImg: "/projects/bchelorthesis.png",
@@ -609,4 +669,13 @@ export const Projects: ProjectInterface[] = [
   },
 ];
 
-export const featuredProjects = Projects.slice(0, 3);
+const featuredIds = [
+  "tkd360-enterprise-platform",
+  "buhl-archive-document-management",
+  "9rayti-study-platform",
+  "doner-ordering-system",
+];
+
+export const featuredProjects: ProjectInterface[] = featuredIds
+  .map((id) => Projects.find((p) => p.id === id)!)
+  .filter(Boolean);

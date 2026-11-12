@@ -65,7 +65,14 @@ export type ValidSkills =
   | "xUnit"
   | "GitHub Actions"
   | "TanStack Query"
-  | "Tailwind CSS";
+  | "Tailwind CSS"
+  | "Serilog"
+  | "Claude Code"
+  | "MCP"
+  | "AI Agents"
+  | "LLM APIs"
+  | "FFmpeg"
+  | "TTS";
 
 export type ValidCategory =
   | "Backend"
@@ -74,7 +81,8 @@ export type ValidCategory =
   | "Web Dev"
   | "UI/UX"
   | "Data/ML"
-  | "Machine Learning";
+  | "Machine Learning"
+  | "AI";
 
 export type ValidExpType = "Personal" | "Professional" | "Academic";
 

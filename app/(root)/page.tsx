@@ -7,58 +7,75 @@ import { AnimatedSection } from "@/components/common/animated-section";
 import { AnimatedText } from "@/components/common/animated-text";
 import { ClientPageWrapper } from "@/components/common/client-page-wrapper";
 import { Icons } from "@/components/common/icons";
-import ContributionCard from "@/components/contributions/contribution-card";
-import ExperienceCard from "@/components/experience/experience-card";
+import { SectionHeading } from "@/components/common/section-heading";
+import Timeline from "@/components/experience/timeline";
 import ProjectCard from "@/components/projects/project-card";
-import SkillsCard from "@/components/skills/skills-card";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { featuredContributions } from "@/config/contributions";
-import { experiences } from "@/config/experience";
+import SkillGroups from "@/components/skills/skill-groups";
+import { buttonVariants } from "@/components/ui/button";
+import { education, workExperiences } from "@/config/experience";
 import { pagesConfig } from "@/config/pages";
+import {
+  atAGlance,
+  languages,
+  profile,
+  skillGroups,
+  stats,
+  valueProps,
+} from "@/config/profile";
 import { featuredProjects } from "@/config/projects";
 import { siteConfig } from "@/config/site";
-import { featuredSkills } from "@/config/skills";
-import { cn } from "@/lib/utils";
+import { cn, formatPeriod } from "@/lib/utils";
 import profileImg from "@/public/profile-img.jpg";
 
 export const metadata: Metadata = {
   title: `${pagesConfig.home.metadata.title}`,
-  description:
-    "El Mehdi Rahali – Backend Software Engineer (.NET/C#) building scalable APIs, background jobs, and maintainable enterprise systems. Explore my projects and experience.",
+  description: siteConfig.description,
   alternates: {
     canonical: siteConfig.url,
   },
 };
 
+const valueIcons = {
+  api: Icons.braces,
+  workflow: Icons.workflow,
+  shield: Icons.shield,
+  sparkles: Icons.sparkles,
+};
+
 export default function IndexPage() {
-  // Structured data for personal portfolio
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: siteConfig.authorName,
     url: siteConfig.url,
-    image: siteConfig.ogImage,
-    jobTitle: "Backend Software Engineer (.NET / C#)",
-    sameAs: [
-      siteConfig.links.github,
-      // Prefer LinkedIn for a portfolio. Make sure it exists in config/site.ts
-      siteConfig.links.linkedin,
-      // siteConfig.links.twitter, // only keep if you actively use it
-    ].filter(Boolean),
+    image: `${siteConfig.url}/profile-img.jpg`,
+    jobTitle: `${profile.role} (${profile.stack})`,
+    worksFor: { "@type": "Organization", name: "TKD GmbH" },
+    alumniOf: { "@type": "CollegeOrUniversity", name: "University of Siegen" },
+    address: { "@type": "PostalAddress", addressRegion: "NRW", addressCountry: "DE" },
+    knowsLanguage: ["de", "en", "fr", "ar"],
+    knowsAbout: [
+      "C#",
+      ".NET",
+      "ASP.NET Core",
+      "Entity Framework Core",
+      "Clean Architecture",
+      "Distributed Systems",
+      "Temporal",
+      "Apache Kafka",
+      "Azure",
+      "Kubernetes",
+    ],
+    sameAs: [siteConfig.links.github, siteConfig.links.linkedin].filter(Boolean),
   };
 
-  // Structured data for the website
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: `${siteConfig.authorName} – Portfolio`,
     url: siteConfig.url,
     inLanguage: "en",
-    author: {
-      "@type": "Person",
-      name: siteConfig.authorName,
-      url: siteConfig.url,
-    },
+    author: { "@type": "Person", name: siteConfig.authorName, url: siteConfig.url },
   };
 
   return (
@@ -74,231 +91,353 @@ export default function IndexPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
 
-      <section className="relative isolate flex min-h-screen items-center overflow-hidden py-20 md:py-24 lg:py-28">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-20 top-14 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-          <div className="absolute -right-16 bottom-10 h-72 w-72 rounded-full bg-accent/40 blur-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,hsla(var(--primary),0.08),transparent_45%)]" />
+      {/* ───────────── Hero ───────────── */}
+      <section className="grid items-center gap-12 pb-16 pt-12 md:pt-20 lg:grid-cols-[1.25fr_0.75fr] lg:gap-16 lg:pb-24">
+        <div className="order-2 lg:order-1">
+          {profile.openToWork && (
+            <AnimatedText delay={0.05}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-success/30 bg-success/10 px-3 py-1 text-xs font-medium text-success">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+                </span>
+                {profile.availabilityText}
+              </span>
+            </AnimatedText>
+          )}
+
+          <AnimatedText
+            as="h1"
+            delay={0.1}
+            className="mt-6 font-heading text-4xl leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl"
+          >
+            {profile.name}
+          </AnimatedText>
+
+          <AnimatedText
+            as="p"
+            delay={0.18}
+            className="mt-3 text-lg font-medium text-primary sm:text-xl"
+          >
+            {profile.role} · {profile.stack}
+          </AnimatedText>
+
+          <AnimatedText
+            as="p"
+            delay={0.26}
+            className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+          >
+            {profile.headline}
+          </AnimatedText>
+
+          <AnimatedText
+            delay={0.32}
+            className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground"
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <Icons.mapPin className="h-4 w-4" /> {profile.location}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Icons.work className="h-4 w-4" /> Software Engineer at TKD GmbH
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Icons.languages className="h-4 w-4" /> DE · EN · FR · AR
+            </span>
+          </AnimatedText>
+
+          <AnimatedText delay={0.4} className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              href={profile.resumePath}
+              target="_blank"
+              className={cn(
+                buttonVariants({ size: "lg" }),
+                "gap-2 rounded-full px-6 shadow-lg shadow-primary/20"
+              )}
+            >
+              <Icons.download className="h-4 w-4" /> Download CV
+            </Link>
+            <Link
+              href="/contact"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "gap-2 rounded-full px-6"
+              )}
+            >
+              <Icons.mail className="h-4 w-4" /> Get in touch
+            </Link>
+            <div className="flex items-center gap-1 pl-1">
+              <Link
+                href={siteConfig.links.linkedin}
+                target="_blank"
+                aria-label="LinkedIn"
+                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "rounded-full")}
+              >
+                <Icons.linkedin className="h-5 w-5" />
+              </Link>
+              <Link
+                href={siteConfig.links.github}
+                target="_blank"
+                aria-label="GitHub"
+                className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "rounded-full")}
+              >
+                <Icons.gitHub className="h-5 w-5" />
+              </Link>
+            </div>
+          </AnimatedText>
         </div>
 
-        <div className="container relative">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
-            <div className="order-2 text-center lg:order-1 lg:text-left">
-              <AnimatedText delay={0.1}>
-                <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold tracking-[0.2em] text-primary">
-                  BACKEND ENGINEER
-                </span>
-              </AnimatedText>
-
-              <AnimatedText
-                as="h1"
-                delay={0.2}
-                className="mt-5 font-heading text-4xl leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl"
-              >
-                El Mehdi Rahali
-              </AnimatedText>
-
-              <AnimatedText
-                as="h3"
-                delay={0.35}
-                className="mt-4 font-heading text-base text-muted-foreground sm:text-lg md:text-xl"
-              >
-                Backend Software Engineer (.NET / C#)
-              </AnimatedText>
-
-              <AnimatedText
-                as="p"
-                delay={0.5}
-                className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base lg:mx-0"
-              >
-                Building scalable .NET backend systems—APIs, background processing, and distributed workflows—within enterprise, multi-tenant environments, with a strong focus on clean architecture, security, and reliability.              </AnimatedText>
-
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start">
-                {[
-                  "APIs",
-                  "Background Processing",
-                  "Distributed Systems",
-                  "Clean Architecture",
-                  "Enterprise Integrations",
-                ].map((badge) => (
-                  <AnimatedText key={badge} delay={0.55}>
-                    <span className="inline-flex rounded-full border bg-background/80 px-3 py-1 text-xs font-medium text-foreground/80 backdrop-blur-sm">
-                      {badge}
-                    </span>
-                  </AnimatedText>
-                ))}
+        <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
+          <AnimatedSection delay={0.15}>
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-primary/20 via-primary/5 to-transparent blur-2xl" />
+              <div className="relative overflow-hidden rounded-[1.75rem] border bg-card p-2 shadow-xl shadow-black/5">
+                <Image
+                  src={profileImg}
+                  height={440}
+                  width={360}
+                  sizes="(max-width: 1024px) 60vw, 360px"
+                  className="h-auto w-56 rounded-[1.35rem] object-cover sm:w-64 lg:w-80"
+                  alt="Portrait of El Mehdi Rahali, Backend Software Engineer (C# / .NET)"
+                  priority
+                />
               </div>
-
-              <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
-                <AnimatedText delay={0.65}>
-                  <Link
-                    href={"/resume/el-mehdi-rahali.pdf"}
-                    target="_blank"
-                    className={cn(
-                      buttonVariants({ size: "lg" }),
-                      "rounded-full px-7 shadow-lg shadow-primary/20"
-                    )}
-                    aria-label="View CV"
-                  >
-                    <Icons.post className="mr-2 h-4 w-4" /> Resume
-                  </Link>
-                </AnimatedText>
-                <AnimatedText delay={0.8}>
-                  <Link
-                    href={"/contact"}
-                    rel="noreferrer"
-                    className={cn(
-                      buttonVariants({
-                        variant: "outline",
-                        size: "lg",
-                      }),
-                      "rounded-full border-primary/30 bg-background/70 px-7 backdrop-blur-sm"
-                    )}
-                    aria-label="Contact El Mehdi Rahali"
-                  >
-                    <Icons.contact className="mr-2 h-4 w-4" /> Contact
-                  </Link>
-                </AnimatedText>
+              <div className="absolute -bottom-5 -left-6 hidden rounded-xl border bg-card/95 px-4 py-3 shadow-lg backdrop-blur sm:block">
+                <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+                  Core stack
+                </p>
+                <p className="text-sm font-semibold">C# · ASP.NET Core · Azure</p>
               </div>
             </div>
-
-            <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
-              <AnimatedSection delay={0.25} direction="left">
-                <div className="relative">
-                  <div className="absolute -inset-5 rounded-[2.4rem] bg-gradient-to-b from-primary/10 via-primary/5 to-transparent blur-2xl" />
-                  <div className="relative rounded-[2rem] border border-border/50 bg-background/40 p-3 shadow-lg shadow-black/10 backdrop-blur-md">
-                    <Image
-                      src={profileImg}
-                      height={420}
-                      width={420}
-                      sizes="(max-width: 1024px) 70vw, 420px"
-                      className="h-auto w-[16.5rem] rounded-[1.5rem] object-cover sm:w-[19rem] lg:w-[22rem]"
-                      alt="El Mehdi Rahali - Backend Software Engineer (.NET/C#) Portfolio"
-                      priority
-                    />
-                  </div>
-                </div>
-              </AnimatedSection>
-            </div>
-          </div>
-
-          <AnimatedText delay={1.1} className="mt-14 flex justify-center">
-            <Icons.chevronDown className="h-6 w-6 animate-bounce text-muted-foreground" />
-          </AnimatedText>
+          </AnimatedSection>
         </div>
       </section>
 
-      <AnimatedSection   className="container space-y-6 py-16 md:py-24"
- id="skills">
-        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-          <AnimatedText
-            as="h2"
-            className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl"
-          >
-            {pagesConfig.skills.title}
-          </AnimatedText>
-          <AnimatedText
-            as="p"
-            delay={0.2}
-            className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7"
-          >
-            {pagesConfig.skills.description}
-          </AnimatedText>
-        </div>
-
-        <SkillsCard skills={featuredSkills} />
-
-        <AnimatedText delay={0.4} className="flex justify-center">
-          <Link href="/skills">
-            <Button variant={"outline"} className="rounded-xl">
-              <Icons.chevronDown className="mr-2 h-4 w-4" /> See all
-            </Button>
-          </Link>
-        </AnimatedText>
+      {/* ───────────── Stats ───────────── */}
+      <AnimatedSection>
+        <dl className="grid grid-cols-2 overflow-hidden rounded-2xl border bg-card md:grid-cols-4">
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              className={cn(
+                "p-5 sm:p-6",
+                i % 2 === 1 && "border-l",
+                i >= 2 && "border-t md:border-t-0",
+                i === 2 && "md:border-l"
+              )}
+            >
+              <dt className="sr-only">{s.label}</dt>
+              <dd className="font-heading text-3xl tracking-tight text-primary sm:text-4xl">
+                {s.value}
+              </dd>
+              <dd className="mt-1 text-sm text-muted-foreground">{s.label}</dd>
+            </div>
+          ))}
+        </dl>
       </AnimatedSection>
 
-      <AnimatedSection
-        direction="right"
-        className="container space-y-6 py-10 my-14"
-        id="projects"
-      >
-        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-          <AnimatedText
-            as="h2"
-            className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl"
-          >
-            {pagesConfig.projects.title}
-          </AnimatedText>
-          <AnimatedText
-            as="p"
-            delay={0.2}
-            className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7"
-          >
-            {pagesConfig.projects.description}
-          </AnimatedText>
-        </div>
+      {/* ───────────── About + At a glance ───────────── */}
+      <section id="about" className="scroll-mt-24 py-20 md:py-28">
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-14">
+          <div>
+            <SectionHeading eyebrow="About" title="What I bring to your team" className="mb-6" />
+            <AnimatedSection className="space-y-4 text-base leading-relaxed text-muted-foreground">
+              {profile.summary.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </AnimatedSection>
 
-        <div className="mx-auto grid justify-center gap-4 md:w-full lg:grid-cols-3">
-          {featuredProjects.map((exp, index) => (
-            <AnimatedSection
-              key={exp.id}
-              delay={0.1 * (index + 1)}
-              direction="up"
-            >
-              <ProjectCard project={exp} />
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {valueProps.map((v, i) => {
+                const Icon = valueIcons[v.icon];
+                return (
+                  <AnimatedSection key={v.title} delay={0.05 * i}>
+                    <div className="h-full rounded-xl border bg-card p-5">
+                      <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <Icon className="h-5 w-5" />
+                      </span>
+                      <h3 className="font-semibold">{v.title}</h3>
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                        {v.description}
+                      </p>
+                    </div>
+                  </AnimatedSection>
+                );
+              })}
+            </div>
+          </div>
+
+          <AnimatedSection delay={0.1}>
+            <aside className="rounded-2xl border bg-card p-6 lg:sticky lg:top-24">
+              <div className="mb-5 flex items-center justify-between">
+                <h3 className="font-heading text-lg">At a glance</h3>
+                <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                  For recruiters
+                </span>
+              </div>
+              <dl className="divide-y">
+                {atAGlance.map((item) => (
+                  <div key={item.label} className="grid grid-cols-[6.5rem_1fr] gap-3 py-3 text-sm">
+                    <dt className="text-muted-foreground">{item.label}</dt>
+                    <dd className="font-medium">{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-6 grid gap-2">
+                <Link
+                  href={profile.resumePath}
+                  target="_blank"
+                  className={cn(buttonVariants(), "w-full gap-2 rounded-full")}
+                >
+                  <Icons.download className="h-4 w-4" /> Download CV (PDF)
+                </Link>
+                <a
+                  href={`mailto:${profile.email}`}
+                  className={cn(buttonVariants({ variant: "outline" }), "w-full min-w-0 gap-2 rounded-full")}
+                >
+                  <Icons.mail className="h-4 w-4 shrink-0" />
+                  <span className="truncate">{profile.email}</span>
+                </a>
+              </div>
+            </aside>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ───────────── Experience ───────────── */}
+      <section id="experience" className="scroll-mt-24 pb-20 md:pb-28">
+        <SectionHeading
+          eyebrow="Experience"
+          title="Where I've made an impact"
+          description="Enterprise backends in production — from document processing at scale to a multi-tenant telecom SaaS platform."
+          link={{ href: "/experience", label: "Full experience" }}
+        />
+        <Timeline experiences={workExperiences} maxSkills={6} />
+      </section>
+
+      {/* ───────────── Projects ───────────── */}
+      <section id="projects" className="scroll-mt-24 pb-20 md:pb-28">
+        <SectionHeading
+          eyebrow="Selected work"
+          title="Case studies"
+          description="How I approach real problems — architecture, trade-offs and the systems behind them."
+          link={{ href: "/projects", label: "All projects" }}
+        />
+        <div className="grid gap-5 sm:grid-cols-2">
+          {featuredProjects.map((project, index) => (
+            <AnimatedSection key={project.id} delay={0.05 * index}>
+              <ProjectCard project={project} />
             </AnimatedSection>
           ))}
         </div>
+      </section>
 
-        <AnimatedText delay={0.4} className="flex justify-center">
-          <Link href="/projects">
-            <Button variant={"outline"} className="rounded-xl">
-              <Icons.chevronDown className="mr-2 h-4 w-4" /> See all
-            </Button>
-          </Link>
-        </AnimatedText>
-      </AnimatedSection>
+      {/* ───────────── Skills ───────────── */}
+      <section id="skills" className="scroll-mt-24 pb-20 md:pb-28">
+        <SectionHeading
+          eyebrow="Skills"
+          title="Technical toolbox"
+          description="Deep in the .NET backend ecosystem, comfortable across the stack."
+          link={{ href: "/skills", label: "Skill details" }}
+        />
+        <AnimatedSection>
+          <SkillGroups groups={skillGroups} />
+        </AnimatedSection>
+      </section>
 
-      <AnimatedSection
-        direction="left"
-        className="container space-y-6 py-10 my-14"
-        id="experience"
-      >
-        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-          <AnimatedText
-            as="h2"
-            className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl"
-          >
-            {pagesConfig.experience.title}
-          </AnimatedText>
-          <AnimatedText
-            as="p"
-            delay={0.2}
-            className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7"
-          >
-            {pagesConfig.experience.description}
-          </AnimatedText>
+      {/* ───────────── Education & Languages ───────────── */}
+      <section id="education" className="scroll-mt-24 pb-20 md:pb-28">
+        <SectionHeading eyebrow="Background" title="Education & languages" />
+        <div className="grid gap-5 lg:grid-cols-[1.5fr_1fr]">
+          <div className="space-y-4">
+            {education.map((e) => (
+              <AnimatedSection key={e.id}>
+                <div className="flex gap-4 rounded-xl border bg-card p-5">
+                  {e.logo && (
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-white">
+                      <Image
+                        src={e.logo}
+                        alt={e.company}
+                        width={48}
+                        height={48}
+                        className="h-full w-full object-contain p-1.5"
+                      />
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:gap-4">
+                      <h3 className="font-semibold">{e.position}</h3>
+                      <span className="shrink-0 text-sm text-muted-foreground">
+                        {formatPeriod(e.startDate, e.endDate)}
+                      </span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {e.company} · {e.location}
+                    </p>
+                    <ul className="mt-2 space-y-1 text-sm">
+                      {e.highlights.map((h) => (
+                        <li key={h}>{h}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+          <AnimatedSection delay={0.1}>
+            <div className="h-full rounded-xl border bg-card p-5">
+              <h3 className="mb-4 flex items-center gap-2 font-semibold">
+                <Icons.languages className="h-4 w-4 text-primary" /> Languages
+              </h3>
+              <ul className="divide-y">
+                {languages.map((l) => (
+                  <li key={l.name} className="flex items-center justify-between py-2.5 text-sm">
+                    <span className="font-medium">{l.name}</span>
+                    <span className="text-muted-foreground">{l.level}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </AnimatedSection>
         </div>
+      </section>
 
-        <div className="mx-auto grid justify-center gap-4 md:w-full lg:grid-cols-3">
-          {experiences.slice(0, 3).map((experience, index) => (
-            <AnimatedSection
-              key={experience.id}
-              delay={0.1 * (index + 1)}
-              direction="up"
-            >
-              <ExperienceCard experience={experience} />
-            </AnimatedSection>
-          ))}
-        </div>
-
-        <AnimatedText delay={0.4} className="flex justify-center">
-          <Link href="/experience">
-            <Button variant={"outline"} className="rounded-xl">
-              <Icons.chevronDown className="mr-2 h-4 w-4" /> See all
-            </Button>
-          </Link>
-        </AnimatedText>
+      {/* ───────────── CTA ───────────── */}
+      <AnimatedSection>
+        <section className="relative overflow-hidden rounded-3xl bg-primary px-6 py-14 text-primary-foreground sm:px-12">
+          <div className="bg-dots pointer-events-none absolute inset-0 opacity-30" />
+          <div className="relative flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="font-heading text-3xl leading-tight sm:text-4xl">
+                Looking for a .NET backend engineer?
+              </h2>
+              <p className="mt-3 text-base opacity-90 sm:text-lg">
+                I&apos;d love to hear about your team and the problems you&apos;re solving.
+                Reach out directly or grab my CV.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/contact"
+                className={cn(
+                  buttonVariants({ variant: "secondary", size: "lg" }),
+                  "gap-2 rounded-full px-6"
+                )}
+              >
+                <Icons.mail className="h-4 w-4" /> Contact me
+              </Link>
+              <Link
+                href={profile.resumePath}
+                target="_blank"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "gap-2 rounded-full border-primary-foreground/40 bg-transparent px-6 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                )}
+              >
+                <Icons.download className="h-4 w-4" /> Download CV
+              </Link>
+            </div>
+          </div>
+        </section>
       </AnimatedSection>
     </ClientPageWrapper>
   );

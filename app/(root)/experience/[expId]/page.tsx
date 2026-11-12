@@ -12,28 +12,13 @@ import ChipContainer from "@/components/ui/chip-container";
 import { ResponsiveTabs } from "@/components/ui/responsive-tabs";
 import { experiences } from "@/config/experience";
 import { siteConfig } from "@/config/site";
+import { formatPeriod } from "@/lib/utils";
 
 interface ExperienceDetailPageProps {
   params: Promise<{
     expId: string;
   }>;
 }
-
-// Helper function to extract year from date
-const getYearFromDate = (date: Date): string => {
-  return new Date(date).getFullYear().toString();
-};
-
-// Helper function to get duration text
-const getDurationText = (
-  startDate: Date,
-  endDate: Date | "Present"
-): string => {
-  const startYear = getYearFromDate(startDate);
-  const endYear =
-    typeof endDate === "string" ? "Present" : getYearFromDate(endDate);
-  return `${startYear} - ${endYear}`;
-};
 
 export async function generateMetadata({
   params,
@@ -66,7 +51,7 @@ export default async function ExperienceDetailPage({
     redirect("/experience");
   }
 
-  const tabItems = [
+  const allTabItems = [
     {
       value: "summary",
       label: "Summary",
@@ -135,6 +120,10 @@ export default async function ExperienceDetailPage({
     },
   ];
 
+  const tabItems = allTabItems.filter(
+    (t) => t.value !== "achievements" || experience.achievements.length > 0
+  );
+
   return (
     <ClientPageWrapper>
       <div className="container max-w-4xl mx-auto py-8 px-4">
@@ -148,7 +137,7 @@ export default async function ExperienceDetailPage({
         </AnimatedSection>
 
         <AnimatedSection delay={0.2}>
-          <Card className="overflow-hidden rounded-lg border bg-background p-2 transition-all duration-300">
+          <Card className="overflow-hidden rounded-xl border bg-card p-2 transition-all duration-300">
             <CardHeader className="pb-6">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -190,10 +179,7 @@ export default async function ExperienceDetailPage({
                   </div>
                   <div className="flex justify-center sm:justify-end">
                     <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
-                      {getDurationText(
-                        experience.startDate,
-                        experience.endDate
-                      )}
+                      {formatPeriod(experience.startDate, experience.endDate)}
                     </span>
                   </div>
                 </div>

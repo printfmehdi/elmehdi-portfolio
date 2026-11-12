@@ -1,55 +1,39 @@
 import { MetadataRoute } from "next";
 
+import { experiences } from "@/config/experience";
+import { Projects } from "@/config/projects";
 import { siteConfig } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url;
+  const now = new Date();
 
-  // Main pages
-  const routes = [
-    {
-      url: `${baseUrl}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/skills`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/experience`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contributions`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/resume`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    },
-  ];
+  const main = [
+    { path: "", priority: 1.0 },
+    { path: "/experience", priority: 0.9 },
+    { path: "/projects", priority: 0.9 },
+    { path: "/skills", priority: 0.8 },
+    { path: "/contact", priority: 0.8 },
+  ].map(({ path, priority }) => ({
+    url: `${baseUrl}${path}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority,
+  }));
 
-  return routes;
+  const projects = Projects.map((p) => ({
+    url: `${baseUrl}/projects/${p.id}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  const roles = experiences.map((e) => ({
+    url: `${baseUrl}/experience/${e.id}`,
+    lastModified: now,
+    changeFrequency: "yearly" as const,
+    priority: 0.6,
+  }));
+
+  return [...main, ...projects, ...roles];
 }

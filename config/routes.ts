@@ -1,9 +1,14 @@
-export const routesConfig: any = {
+export interface NavItem {
+  title: string;
+  href: string;
+  disabled?: boolean;
+}
+
+export const routesConfig: { mainNav: NavItem[] } = {
   mainNav: [
-    { title: "Skills", href: "/skills" },
-    { title: "Projects", href: "/projects" },
     { title: "Experience", href: "/experience" },
-    // { title: "Contributions", href: "/contributions" }, // optional
+    { title: "Projects", href: "/projects" },
+    { title: "Skills", href: "/skills" },
     { title: "Contact", href: "/contact" },
   ],
 };

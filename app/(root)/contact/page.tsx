@@ -13,11 +13,12 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <PageContainer
+      eyebrow="Let's talk"
       title={pagesConfig.contact.title}
       description={pagesConfig.contact.description}
     >
-      <div className="mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
-        <section className="rounded-xl border bg-background p-5 sm:p-6">
+      <div className="mx-auto grid w-full max-w-none gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
+        <section className="rounded-xl border bg-card p-5 sm:p-6">
           <ContactForm />
         </section>
         <ContactInfoSidebar />

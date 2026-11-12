@@ -12,6 +12,10 @@ export interface ExperienceInterface {
   skills: ValidSkills[];
   companyUrl?: string;
   logo?: string;
+  /** "work" entries appear in the career timeline, "education" in the education block. */
+  kind: "work" | "education";
+  /** 3 short, outcome-focused bullets shown on the homepage / timeline. */
+  highlights: string[];
 }
 
 export const experiences: ExperienceInterface[] = [
@@ -22,19 +26,26 @@ export const experiences: ExperienceInterface[] = [
     location: "Germany",
     startDate: new Date("2024-08-01"),
     endDate: "Present",
+    kind: "work",
+    highlights: [
+      "Building the backend of a multi-tenant telecom & device-management SaaS platform for corporate customers (modular monolith, ASP.NET Core).",
+      "Integrated 6+ enterprise systems — Intune, Entra ID, Telekom B2B, ServiceNow, WeClapp, Zendesk — with event-driven webhooks and Temporal workflows.",
+      "Designed an import/export service hub for bulk data (users, devices, contracts) — higher data quality, far less manual work.",
+    ],
     description: [
-      "Backend development of a multi-tenant enterprise platform for mobile device and telecommunications management, serving corporate customers with complex contract and device lifecycles.",
-      "Designed and implemented RESTful APIs with ASP.NET Core covering mobile contracts, devices, tariff configurations, booking profiles, and service options.",
-      "Integrated external B2B systems and APIs including Telekom, Vodafone, Microsoft Graph, ServiceNow, and other third-party enterprise platforms.",
-      "Built stateful and long-running workflows using Temporal and Quartz, including orchestration of async activities, retry strategies, and fault handling.",
-      "Implemented idempotent webhook handlers and background jobs for reliable, race-condition-free processing of external status updates across distributed services.",
-      "Designed tenant-isolated, permission-aware data access layers using Entity Framework Core with PostgreSQL and MSSQL, including advanced filtering via Gridify.",
-      "Built API gateway and reverse-proxy routing with YARP to securely expose and route backend services.",
-      "Integrated identity providers and implemented authentication and authorization flows for secure, role-based access control.",
-      "Participated in strict code review and pull request processes with a strong focus on clean architecture, correctness, and security.",
-      "Collaborated closely with product owners and domain experts to translate complex business requirements into scalable and maintainable technical solutions.",
+      "Design and implementation of a modular monolith architecture for a multi-tenant telecommunications platform managing devices, contracts, tariffs and billing processes for corporate customers.",
+      "Event-driven architecture with webhooks and workflow orchestration in Temporal for reliable processing of external events (tenant provisioning, shipment tracking, contract changes).",
+      "Integration of multiple enterprise systems (Microsoft Intune, Entra ID, Microsoft Graph, Telekom B2B, ServiceNow, WeClapp, Zendesk) to automatically synchronise contract, tariff and service data across distributed systems.",
+      "Architecture and implementation of an import/export service hub for processing large data volumes (users, devices, contracts, services).",
+      "Contributed to the architecture and development of a multi-tenant shop system (TKD Shop) including product modelling, pricing logic and cross-selling features.",
+      "Tenant-isolated, permission-aware data access with Entity Framework Core on PostgreSQL and MSSQL, including advanced filtering via Gridify; API gateway routing with YARP.",
+      "Improved performance and reliability through asynchronous processing, distributed caching, structured logging with Serilog and monitoring.",
+      "Daily use of agentic, AI-assisted engineering workflows (Claude Code, Agent Skills, MCP) for implementation, refactoring, debugging and code analysis in a large production codebase.",
     ],
     achievements: [
+      "Designed and built an import/export service hub for bulk data, significantly reducing manual effort while improving data quality.",
+      "Co-designed the multi-tenant TKD Shop: product modelling, pricing logic and cross-selling.",
+      "Shortened delivery cycles with AI-assisted engineering workflows while keeping code quality high.",
       "Extended backend logic for Telekom booking profiles, options, and synchronization pipelines end-to-end.",
       "Improved production stability by identifying and resolving race conditions, edge cases, and failure scenarios in async workflows.",
       "Implemented idempotent webhook handlers and background jobs ensuring reliable and consistent external state processing.",
@@ -66,6 +77,9 @@ export const experiences: ExperienceInterface[] = [
       "Temporal",
       "Quartz",
       "Clean Architecture",
+      "Serilog",
+      "Claude Code",
+      "MCP",
     ],
     companyUrl: "https://www.tkdeutschland.de/",
     logo: "/experience/tkd.png",
@@ -77,6 +91,12 @@ export const experiences: ExperienceInterface[] = [
     location: "Neunkirchen, Germany",
     startDate: new Date("2021-11-01"),
     endDate: new Date("2024-06-01"),
+    kind: "work",
+    highlights: [
+      "Backend for an enterprise document platform with 3M+ users: upload, virus scan, OCR, metadata extraction and versioning of tax documents.",
+      "Event-driven processing with Apache Kafka and CQRS/MediatR; full-text search over large document sets with Elasticsearch.",
+      "Integrated customer apps, German tax authorities (Finanzamt) and BI systems; CI/CD with Azure DevOps.",
+    ],
     description: [
       "Contributed to the backend development of the document management platform Buhl-Archiv, orchestrating the full lifecycle of tax documents, including upload/download, antivirus scanning, OCR processing, metadata extraction, and document versioning.",
       "Implemented backend components using CQRS with MediatR and supported event-driven processing using Apache Kafka for asynchronous workflows.",
@@ -84,6 +104,7 @@ export const experiences: ExperienceInterface[] = [
       "Integrated Elasticsearch as a search engine for efficient indexing, querying, and enabling full-text search across large document datasets.",
       "Supported integrations with multiple consumer channels, including customer-facing applications, German tax authorities (Finanzamt), and internal BI systems.",
       "Monitored and optimized production systems using Grafana and Elastic Stack, improving observability and reducing incident response time.",
+      "Developed and maintained CI/CD pipelines in Azure DevOps to automate build and release processes.",
     ],
 achievements: [
   "Designed and implemented a scalable document lifecycle pipeline handling upload/download, antivirus scanning, OCR processing, metadata extraction, and versioning, improving processing reliability and automation.",
@@ -128,6 +149,11 @@ achievements: [
     location: "Siegen, Germany",
     startDate: new Date("2020-09-01"),
     endDate: new Date("2024-03-01"),
+    kind: "education",
+    highlights: [
+      "Specialisation in Software Engineering.",
+      "Bachelor thesis on Feature Model Learning with dimensionality reduction (Linear & Logistic PCA).",
+    ],
     description: [
       "B.Sc. in Computer Science with a specialisation in Software Engineering.",
       "Coursework in algorithms, data structures, databases, software architecture, and object-oriented design — with a strong emphasis on practical application.",
@@ -151,6 +177,10 @@ achievements: [
     location: "Fes, Morocco",
     startDate: new Date("2018-09-01"),
     endDate: new Date("2020-02-01"),
+    kind: "education",
+    highlights: [
+      "Two-year intensive programme in mathematics, physics and engineering fundamentals.",
+    ],
     description: [
       "Two-year intensive preparatory cycle in mathematics, physics, and engineering fundamentals — equivalent to a first-cycle engineering preparatory programme.",
       "Built strong analytical and problem-solving foundations as preparation for engineering studies.",
@@ -166,3 +196,6 @@ achievements: [
     logo: "/experience/ensa.jpg",
   },
 ];
+
+export const workExperiences = experiences.filter((e) => e.kind === "work");
+export const education = experiences.filter((e) => e.kind === "education");

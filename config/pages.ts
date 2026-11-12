@@ -23,7 +23,8 @@ export const pagesConfig: PagesConfig = {
   },
   skills: {
     title: "Skills",
-    description: "Technologies and competencies I apply in real-world projects.",
+    description:
+      "The tools and practices I use every day to ship reliable backend systems — grouped the way you would find them on my CV.",
     metadata: {
       title: "Skills – El Mehdi Rahali",
       description:
@@ -33,16 +34,17 @@ export const pagesConfig: PagesConfig = {
   projects: {
     title: "Projects",
     description:
-      "Selected projects from professional work, university, and personal development.",
+      "Case studies from enterprise work, side projects and university — with architecture diagrams and the decisions behind them.",
     metadata: {
       title: "Projects – El Mehdi Rahali",
       description:
-        "9rayti study platform, Döner ordering system, bachelor thesis, and more.",
+        "TKD360 enterprise platform, Buhl document archive, 9rayti study platform, restaurant SaaS, AI video automation and bachelor thesis.",
     },
   },
   experience: {
     title: "Experience",
-    description: "Professional background and relevant roles.",
+    description:
+      "5 years of building production .NET systems — from an enterprise document platform with 3M+ users to a multi-tenant telecom SaaS.",
     metadata: {
       title: "Experience – El Mehdi Rahali",
       description:
@@ -59,7 +61,8 @@ export const pagesConfig: PagesConfig = {
   },
   contact: {
     title: "Contact",
-    description: "Get in touch — I’m happy to connect and exchange ideas.",
+    description:
+      "Recruiter, hiring manager or fellow engineer? Send me a message — I am happy to talk about roles, projects and architecture.",
     metadata: {
       title: "Contact – El Mehdi Rahali",
       description: "Ways to reach me: email, LinkedIn, GitHub.",

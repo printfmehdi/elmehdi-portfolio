@@ -12,9 +12,9 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: { DEFAULT: "1rem", sm: "1.5rem", lg: "2rem" },
       screens: {
-        "2xl": "1400px",
+        "2xl": "1200px",
       },
     },
     extend: {
@@ -52,6 +52,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: "hsl(var(--success))",
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
@@ -79,16 +80,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-  safelist: [
-    "dark",
-    "retro",
-    "cyberpunk",
-    "paper",
-    "aurora",
-    "synthwave",
-    {
-      pattern:
-        /^(.*?)(dark|retro|cyberpunk|paper|aurora|synthwave)([:.])(.*?)$/,
-    },
-  ],
 };

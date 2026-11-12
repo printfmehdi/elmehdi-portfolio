@@ -1,17 +1,17 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { Icons } from "@/components/common/icons";
-import ProjectPageInfoTabs from "@/components/projects/project-page-info-tabs";
 import ProjectDescription from "@/components/projects/project-description";
+import ProjectPageInfoTabs from "@/components/projects/project-page-info-tabs";
 import { buttonVariants } from "@/components/ui/button";
-import ChipContainer from "@/components/ui/chip-container";
-import CustomTooltip from "@/components/ui/custom-tooltip";
+import Chip from "@/components/ui/chip";
+import { profile } from "@/config/profile";
 import { Projects } from "@/config/projects";
 import { siteConfig } from "@/config/site";
-import { cn, formatDateFromObj } from "@/lib/utils";
-import profileImg from "@/public/profile-img.jpg";
+import { cn, formatPeriod } from "@/lib/utils";
 
 interface ProjectPageProps {
   params: Promise<{
@@ -19,118 +19,144 @@ interface ProjectPageProps {
   }>;
 }
 
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const { projectId } = await params;
+  const project = Projects.find((p) => p.id === projectId);
+  if (!project) return { title: "Project not found" };
+  return {
+    title: `${project.companyName} – Case Study`,
+    description: project.shortDescription,
+    alternates: { canonical: `${siteConfig.url}/projects/${projectId}` },
+  };
+}
+
+export function generateStaticParams() {
+  return Projects.map((p) => ({ projectId: p.id }));
+}
+
+const typeLabel = {
+  Professional: "Professional project",
+  Personal: "Side project",
+  Academic: "Academic project",
+} as const;
+
 export default async function Project({ params }: ProjectPageProps) {
   const { projectId } = await params;
-  let project = Projects.find((val) => val.id === projectId);
+  const project = Projects.find((val) => val.id === projectId);
   if (!project) {
     redirect("/projects");
   }
 
   return (
-    <article className="container relative max-w-3xl py-6 lg:py-10">
+    <article className="mx-auto max-w-3xl pb-10 pt-8 lg:pt-12">
       <Link
         href="/projects"
-        className={cn(
-          buttonVariants({ variant: "ghost" }),
-          "absolute left-[-200px] top-14 hidden xl:inline-flex"
-        )}
+        className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "-ml-3 mb-6 gap-1")}
       >
-        <Icons.chevronLeft className="mr-2 h-4 w-4" />
-        All Projects
+        <Icons.chevronLeft className="h-4 w-4" />
+        All projects
       </Link>
-      <div>
-        <time
-          dateTime={Date.now().toString()}
-          className="block text-sm text-muted-foreground"
-        >
-          {formatDateFromObj(project.startDate)}
-        </time>
-        <h1 className="flex items-center justify-between mt-2 font-heading text-4xl leading-tight lg:text-5xl">
-          {project.companyName}
-          <div className="flex items-center">
-            {project.githubLink && (
-              <CustomTooltip text="Link to the source code.">
-                <Link href={project.githubLink} target="_blank">
-                  <Icons.gitHub className="w-6 ml-4 text-muted-foreground hover:text-foreground" />
-                </Link>
-              </CustomTooltip>
-            )}
-            {project.websiteLink && (
-              <CustomTooltip text="Please note that some project links may be temporarily unavailable.">
-                <Link href={project.websiteLink} target="_blank">
-                  <Icons.externalLink className="w-6 ml-4 text-muted-foreground hover:text-foreground " />
-                </Link>
-              </CustomTooltip>
-            )}
-          </div>
-        </h1>
-        <ChipContainer textArr={project.category} />
-        <div className="mt-4 flex space-x-4">
-          <Link
-            href={siteConfig.links.github}
-            className="flex items-center space-x-2 text-sm"
-          >
-            <Image
-              src={profileImg}
-              alt={siteConfig.authorName}
-              width={42}
-              height={42}
-              className="rounded-full bg-background"
-            />
 
-            <div className="flex-1 text-left leading-tight">
-              <p className="font-medium">{siteConfig.authorName}</p>
-              <p className="text-[12px] text-muted-foreground">
-                @{siteConfig.username}
-              </p>
-            </div>
-          </Link>
+      <header>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <Icons.calendar className="h-4 w-4" />
+            {formatPeriod(project.startDate, project.endDate, project.ongoing)}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Icons.work className="h-4 w-4" />
+            {typeLabel[project.type]}
+          </span>
         </div>
+        <h1 className="mt-3 font-heading text-3xl leading-tight tracking-tight sm:text-4xl lg:text-5xl">
+          {project.companyName}
+        </h1>
+        <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+          {project.shortDescription}
+        </p>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {project.githubLink && (
+            <Link
+              href={project.githubLink}
+              target="_blank"
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2 rounded-full")}
+            >
+              <Icons.gitHub className="h-4 w-4" /> Source code
+            </Link>
+          )}
+          {project.websiteLink && (
+            <Link
+              href={project.websiteLink}
+              target="_blank"
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2 rounded-full")}
+            >
+              <Icons.arrowUpRight className="h-4 w-4" />
+              {project.websiteLink.endsWith(".pdf") ? "Read thesis (PDF)" : "Website"}
+            </Link>
+          )}
+        </div>
+      </header>
+
+      <div className="relative my-10 aspect-[16/9] w-full overflow-hidden rounded-xl border bg-muted">
+        <Image
+          src={project.companyLogoImg}
+          alt={project.companyName}
+          fill
+          sizes="(max-width: 768px) 100vw, 768px"
+          className="object-cover"
+          priority
+        />
       </div>
 
-      <Image
-        src={project.companyLogoImg}
-        alt={project.companyName}
-        width={720}
-        height={405}
-        className="my-8 rounded-md border bg-muted transition-colors"
-        priority
-      />
+      {project.techStack.length > 0 && (
+        <section className="mb-12">
+          <h2 className="mb-4 font-heading text-2xl">Tech stack</h2>
+          <div className="flex flex-wrap gap-1.5">
+            {project.techStack.map((t) => (
+              <Chip key={t} content={t} />
+            ))}
+          </div>
+        </section>
+      )}
 
-      <div className="mb-7 ">
-        <h2 className="inline-block font-heading text-3xl leading-tight lg:text-3xl mb-2">
-          Tech Stack
-        </h2>
-        <ChipContainer textArr={project.techStack} />
-      </div>
-
-      <div className="mb-7 ">
-        <h2 className="inline-block font-heading text-3xl leading-tight lg:text-3xl mb-2">
-          Description
-        </h2>
-        {/* {<project.descriptionComponent />} */}
+      <section className="mb-12">
+        <h2 className="mb-4 font-heading text-2xl">Overview</h2>
         <ProjectDescription
           paragraphs={project.descriptionDetails.paragraphs}
           bullets={project.descriptionDetails.bullets}
         />
-      </div>
+      </section>
 
-      <div className="mb-7 ">
-        <h2 className="inline-block font-heading text-3xl leading-tight lg:text-3xl mb-5">
-          Page Info
-        </h2>
-        <ProjectPageInfoTabs pages={project.pagesInfoArr} />
-      </div>
+      {project.pagesInfoArr.length > 0 && (
+        <section className="mb-12">
+          <h2 className="mb-2 font-heading text-2xl">Architecture & key features</h2>
+          <p className="mb-5 text-sm text-muted-foreground">
+            Select a topic to see the details and the diagram behind it.
+          </p>
+          <ProjectPageInfoTabs pages={project.pagesInfoArr} />
+        </section>
+      )}
 
-      <hr className="mt-12" />
-      <div className="flex justify-center py-6 lg:py-10">
-        <Link
-          href="/projects"
-          className={cn(buttonVariants({ variant: "ghost" }))}
-        >
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          All Projects
-        </Link>
+      <div className="mt-16 flex flex-col items-start gap-4 rounded-2xl border bg-card p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="font-semibold">Interested in how I could help your team?</p>
+          <p className="text-sm text-muted-foreground">
+            Let&apos;s talk about your backend and integration challenges.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Link href="/contact" className={cn(buttonVariants(), "rounded-full")}>
+            Contact me
+          </Link>
+          <Link
+            href={profile.resumePath}
+            target="_blank"
+            className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
+          >
+            CV
+          </Link>
+        </div>
       </div>
     </article>
   );
