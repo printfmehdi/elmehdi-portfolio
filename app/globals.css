@@ -117,6 +117,51 @@
   background-size: 22px 22px;
 }
 
+/* ───────── Architecture diagrams (Mermaid) ───────── */
+.arch-diagram svg,
+.arch-diagram foreignObject {
+  overflow: visible;
+}
+
+.arch-diagram .node rect,
+.arch-diagram .node polygon,
+.arch-diagram .node path {
+  filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.06));
+}
+
+.arch-diagram .node rect.basic,
+.arch-diagram .node rect.label-container {
+  rx: 10px;
+  ry: 10px;
+}
+
+.arch-diagram .cluster rect {
+  rx: 14px;
+  ry: 14px;
+  stroke-dasharray: 0;
+}
+
+.arch-diagram .cluster-label,
+.arch-diagram .cluster .nodeLabel {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.arch-diagram .flowchart-link {
+  stroke-width: 1.6px;
+}
+
+.arch-diagram .edgeLabel,
+.arch-diagram .edgeLabel p {
+  font-size: 12.5px;
+  color: hsl(var(--muted-foreground));
+}
+
+.arch-diagram .nodeLabel small {
+  font-size: 12px;
+  opacity: 0.72;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

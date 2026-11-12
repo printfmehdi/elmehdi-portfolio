@@ -64,89 +64,112 @@ export const Projects: ProjectInterface[] = [
         title: "Backend APIs & Multi-Tenancy",
         description:
           "Designed and evolved tenant-aware REST APIs with strict per-tenant data isolation, permission-gated access, and backward-compatible contracts across a large enterprise codebase. Every data access path flows through global EF Core query filters that enforce tenant boundaries at the database level — eliminating the risk of cross-tenant data leaks.",
-        mermaid: `flowchart TD
-          C[Client App] --> API[ASP.NET Core API]
-          API --> TC[Tenant Context Resolution]
-          API --> AUTH[Permission and Role Checks]
-          TC --> APP[Application and Domain Services]
-          AUTH --> APP
-          APP --> REPO[Repository Layer]
-          REPO --> EF[Entity Framework Core]
-          EF --> GF[Global Query Filters per Tenant]
-          GF --> DB[(PostgreSQL / MSSQL)]
-          APP --> AUDIT[Audit and Access Policies]
-          AUDIT --> DB
-          NOTE[Every query is automatically scoped to the resolved tenant] -.-> GF`,
+        mermaid: `flowchart TB
+  subgraph clients["Clients"]
+    direction TB
+    PORTAL["Customer portal"]:::client
+    ADMIN["Admin backoffice"]:::client
+  end
+  subgraph api["ASP.NET Core API"]
+    direction LR
+    AUTH["AuthN / AuthZ<br/><small>OIDC · roles · permissions</small>"]:::core --> TENANT["Tenant resolution<br/><small>token claims → TenantContext</small>"]:::core --> APP["Application services<br/><small>contracts · devices · tariffs</small>"]:::svc
+  end
+  subgraph data["Data access"]
+    direction LR
+    GRID["Gridify<br/><small>filtering · sorting · paging</small>"]:::svc --> EF["EF Core<br/><small>global tenant query filters</small>"]:::core
+  end
+  DB[("PostgreSQL / SQL Server")]:::store
+  clients -->|"JWT bearer token"| api
+  api --> data
+  data -->|"WHERE TenantId = current tenant"| DB`,
         imgArr: [],
       },
       {
         title: "Distributed Workflows & Temporal",
         description:
           "Implemented stateful, long-running workflows using Temporal to orchestrate telecom-related processes — including mobile contract provisioning, device assignments, and tariff changes — with deterministic execution, configurable retry strategies, and structured failure handling. Temporal's durable execution model ensures workflows survive process restarts and infrastructure failures without losing state.",
-        mermaid: `flowchart TD
-          TRG[Business Trigger] --> WF[Temporal Workflow]
-          WF --> PLAN[Deterministic Workflow Logic]
-          PLAN --> A1[Activity: Validate Input]
-          PLAN --> A2[Activity: Execute Step]
-          PLAN --> A3[Activity: Persist Outcome]
-          A1 --> RETRY[Retry Policy]
-          A2 --> RETRY
-          A3 --> RETRY
-          RETRY --> TMO[Timeout and Backoff Rules]
-          TMO --> WF
-          WF --> OK[Completed State]
-          WF --> FAIL[Failure Handling and Compensation]
-          FAIL --> ALERT[Operational Alerting]`,
+        mermaid: `flowchart TB
+  EVT(["Contract change<br/><small>requested by customer</small>"]):::client
+  subgraph wf["Temporal workflow · durable"]
+    direction TB
+    V["Validate<br/><small>activity</small>"]:::svc
+    P["Submit to provider<br/><small>activity</small>"]:::ext
+    W{{"Await provider<br/><small>callback / signal</small>"}}:::queue
+    S["Persist state<br/><small>activity</small>"]:::svc
+  end
+  DONE(["Contract updated"]):::ok
+  COMP["Compensate<br/><small>roll back · notify</small>"]:::fail
+  EVT --> V --> P --> W --> S --> DONE
+  P -. "retry with backoff" .-> P
+  W -. "timeout" .-> COMP`,
         imgArr: [],
       },
       {
         title: "B2B Integrations",
         description:
           "Integrated external enterprise APIs including Telekom and Vodafone B2B interfaces, Microsoft Graph, and ServiceNow. Built abstraction layers to isolate third-party API contracts from internal domain logic, making integrations replaceable and testable. Handled authentication flows, rate limiting, and error recovery for each provider.",
-        mermaid: `flowchart TD
-          APP[Application Layer] --> GW[Integration Gateway]
-          GW --> TEL[Telekom B2B API]
-          GW --> VOD[Vodafone B2B API]
-          GW --> MSG[Microsoft Graph]
-          GW --> SN[ServiceNow]
-          GW --> RETRY[Retry and Error Recovery]
-          RETRY --> LOG[Structured Logging]
-          LOG --> OBS[Grafana / Elastic Stack]
-          GW --> ADAPTER[Provider Adapters]
-          ADAPTER --> DOMAIN[Domain Events]`,
+        mermaid: `flowchart TB
+  subgraph core["TKD360 core"]
+    direction LR
+    DOM["Domain services"]:::core --> PORT["Integration ports<br/><small>provider-agnostic interfaces</small>"]:::core --> ADP["Provider adapters<br/><small>typed HttpClients · retries · auth</small>"]:::svc
+  end
+  subgraph ext["External systems"]
+    direction TB
+    TEL["Telekom · Vodafone<br/><small>B2B APIs</small>"]:::ext
+    MS["Intune · Entra ID<br/><small>Microsoft Graph</small>"]:::ext
+    SN["ServiceNow"]:::ext
+    WZ["WeClapp · Zendesk"]:::ext
+  end
+  OBS["Serilog → Grafana / Elastic<br/><small>correlation ID per call</small>"]:::ops
+  core <-->|"REST · webhooks"| ext
+  core -.->|"structured logs"| OBS`,
         imgArr: [],
       },
       {
         title: "Webhooks & Background Processing",
         description:
           "Built resilient webhook handlers and Quartz-based background jobs for processing external system callbacks and scheduled synchronization tasks. Handlers are fully idempotent — duplicate events are detected and safely ignored. All processing is transactional, with dead-letter handling and structured logging for operational visibility.",
-        mermaid: `flowchart TD
-          EXT[External System] --> WH[Webhook Endpoint]
-          WH --> VAL[Signature and Payload Validation]
-          VAL --> IDEMP[Idempotency Check]
-          IDEMP --> QUEUE[Durable Job Queue]
-          QUEUE --> JOB[Background Worker]
-          JOB --> RULES[Business Rules Processing]
-          RULES --> STATE[State Update]
-          STATE --> STORE[(Transactional Store)]
-          JOB --> RETRY[Retry and Dead-Letter Strategy]
-          RETRY --> OBS[Operational Monitoring]
-          IDEMP --> SKIP[Duplicate Event Ignored]`,
+        mermaid: `flowchart TB
+  EXT["Provider<br/><small>status webhook</small>"]:::ext
+  subgraph ingest["① Ingest & acknowledge"]
+    direction LR
+    EP["Webhook endpoint"]:::core --> SIG["Verify signature<br/><small>& payload schema</small>"]:::svc --> IDEM["Idempotency check<br/><small>event ID seen before?</small>"]:::core
+  end
+  SKIP(["Duplicate → ignore<br/><small>200 OK, no side effects</small>"]):::ok
+  Q[("Durable job queue")]:::store
+  subgraph proc["② Background · Quartz"]
+    direction LR
+    JOB["Worker"]:::queue --> RULES["Business rules<br/><small>transactional update</small>"]:::svc --> DB[("Domain state")]:::store
+  end
+  DLQ["Dead letter<br/><small>+ alert</small>"]:::fail
+  EXT --> ingest
+  ingest -->|"duplicate"| SKIP
+  ingest -->|"new event"| Q
+  Q --> proc
+  proc -.->|"retries exhausted"| DLQ`,
         imgArr: [],
       },
       {
         title: "API Gateway & Routing with YARP",
         description:
           "Implemented a reverse-proxy layer using YARP (Yet Another Reverse Proxy) to securely expose and route backend services. Configured dynamic route resolution, authentication forwarding, and request transformation to decouple frontend consumers from internal service topology.",
-        mermaid: `flowchart LR
-          CLIENT[Client] --> YARP[YARP Reverse Proxy]
-          YARP --> AUTH[Auth Middleware]
-          AUTH --> ROUTE[Dynamic Route Resolution]
-          ROUTE --> SVC1[Service A]
-          ROUTE --> SVC2[Service B]
-          ROUTE --> SVC3[Service C]
-          YARP --> TRANSFORM[Request Transformation]
-          TRANSFORM --> ROUTE`,
+        mermaid: `flowchart TB
+  C["Web & mobile clients"]:::client
+  subgraph gw["YARP reverse proxy"]
+    direction TB
+    AUTH["Auth forwarding<br/><small>token validation</small>"]:::core
+    ROUTE["Route matching<br/><small>/api/{module}/**</small>"]:::core
+    TX["Request transforms<br/><small>headers · path rewrite</small>"]:::svc
+  end
+  subgraph backends["Backend services"]
+    direction TB
+    S1["Platform API"]:::svc
+    S2["Shop API"]:::svc
+    S3["Internal services"]:::svc
+  end
+  C -->|"single public entry point"| AUTH
+  AUTH --> ROUTE --> TX
+  TX --> S1 & S2 & S3`,
         imgArr: [],
       },
     ],
@@ -199,19 +222,22 @@ export const Projects: ProjectInterface[] = [
         title: "System Architecture Overview",
         description:
           "Designed a scalable Clean Architecture backend with strict separation of concerns. Both customer and admin applications interact with a shared API and receive real-time updates via SignalR.",
-        mermaid: `flowchart LR
-          CustomerApp[Customer Web App]
-          AdminApp[Admin Dashboard]
-          API[ASP.NET Core API]
-          DB[(PostgreSQL Database)]
-          RT[SignalR Hub]
-
-          CustomerApp -->|REST| API
-          AdminApp -->|REST| API
-          API --> DB
-          API --> RT
-          RT --> CustomerApp
-          RT --> AdminApp`,
+        mermaid: `flowchart TB
+  subgraph clients["React clients"]
+    direction TB
+    CUST["Customer web app<br/><small>menu · cart · checkout</small>"]:::client
+    KDS["Kitchen dashboard<br/><small>live order board</small>"]:::client
+  end
+  subgraph api["Clean Architecture API"]
+    direction LR
+    WEB["Web / API layer"]:::svc --> APP["Application<br/><small>CQRS · MediatR</small>"]:::core --> DOM["Domain<br/><small>Order aggregate · pricing rules</small>"]:::core
+  end
+  HUB{{"SignalR hub"}}:::queue
+  DB[("PostgreSQL")]:::store
+  clients -->|"REST"| api
+  api -->|"EF Core"| DB
+  api -->|"OrderStatusChanged"| HUB
+  HUB -.->|"push, no polling"| clients`,
         imgArr: []
       },
       {
@@ -236,6 +262,15 @@ export const Projects: ProjectInterface[] = [
         title: "Admin Dashboard & Live Order Management",
         description:
           "Designed and implemented a real-time kitchen dashboard enabling staff to manage incoming orders with zero latency. Orders are streamed via SignalR and organized into state-driven columns (Pending, Preparing, Ready, Picked Up). State transitions trigger instant synchronization across all connected clients.",
+        mermaid: `stateDiagram-v2
+  direction LR
+  [*] --> Pending: order placed
+  Pending --> Preparing: kitchen accepts
+  Preparing --> Ready: food done
+  Ready --> PickedUp: handed over
+  Pending --> Cancelled: rejected
+  PickedUp --> [*]
+  Cancelled --> [*]`,
         imgArr: [
           "/projects/herrbiggie/admin-dashbaord.png"
         ]
@@ -321,67 +356,104 @@ export const Projects: ProjectInterface[] = [
         title: "Modular Monolith & Request Flow",
         description:
           "The backend is a Clean Architecture modular monolith (Api, Application, Domain, Infrastructure, SharedKernel). Controllers only talk to a custom command/query dispatcher; requests pass FluentValidation before reaching their handler. Side effects such as reputation points, notifications and search re-indexing never run inline — they are raised as domain events, written to a transactional outbox and processed asynchronously.",
-        mermaid: `flowchart LR
-          SPA[React SPA] --> API[ASP.NET Core Controllers]
-          API --> DISP[Command / Query Dispatcher]
-          DISP --> VAL[FluentValidation]
-          VAL --> H[Handlers]
-          H --> REPO[Repositories / EF Core]
-          REPO --> DB[(SQL Server)]
-          H --> EV[Domain Events]
-          EV --> OUT[(Outbox Table)]
-          OUT --> PROC[Outbox Processor]
-          PROC --> REP[Reputation]
-          PROC --> NOTIF[Notifications]
-          PROC --> IDX[Search Indexing]`,
+        mermaid: `flowchart TB
+  SPA["React SPA"]:::client
+  subgraph host["Request pipeline"]
+    direction LR
+    API["Controllers"]:::svc --> DISP["Dispatcher<br/><small>commands · queries</small>"]:::core --> VAL["FluentValidation"]:::svc --> H["Handlers"]:::core
+  end
+  subgraph tx["One database transaction"]
+    direction TB
+    DB[("SQL Server<br/><small>entity state</small>")]:::store
+    OUT[("Outbox table<br/><small>domain events</small>")]:::store
+  end
+  PROC["Outbox processor<br/><small>background worker</small>"]:::queue
+  subgraph fx["Async side effects"]
+    direction TB
+    REP["Reputation"]:::svc
+    NOT["Notifications"]:::svc
+    IDX["Search indexing"]:::svc
+  end
+  SPA --> host
+  host --> tx
+  tx -->|"poll outbox"| PROC
+  PROC --> fx`,
         imgArr: [],
       },
       {
         title: "Secure Upload & Ingestion Pipeline",
         description:
           "Untrusted user files never reach public storage unchecked. Uploads land in a quarantine bucket, are scanned by ClamAV, inspected with PdfPig, matched against a SHA-256 blocklist and only then promoted to the originals bucket. A background worker derives thumbnails, rejected files are purged, and downloads are served through short-lived signed S3 URLs.",
-        mermaid: `flowchart TD
-          UP[Multipart Upload] --> Q[(Quarantine Bucket)]
-          Q --> SCAN[ClamAV Virus Scan]
-          SCAN --> INSP[PdfPig Inspection]
-          INSP --> HASH[SHA-256 Blocklist Check]
-          HASH -->|valid| PROM[Promote to Originals]
-          HASH -->|rejected| PURGE[Purge File]
-          PROM --> THUMB[Derive Thumbnails]
-          THUMB --> DER[(Derived Bucket)]
-          PROM --> SIGNED[Signed URL Downloads]`,
+        mermaid: `flowchart TB
+  UP["Student upload<br/><small>multipart</small>"]:::client
+  Q[("Quarantine bucket<br/><small>private</small>")]:::store
+  subgraph checks["Security checks"]
+    direction LR
+    AV["ClamAV<br/><small>virus scan</small>"]:::core --> PDF["PdfPig<br/><small>structure check</small>"]:::core --> HASH["SHA-256<br/><small>blocklist</small>"]:::core
+  end
+  X["Reject & purge"]:::fail
+  ORIG[("Originals bucket")]:::store
+  subgraph serve["Serving"]
+    direction LR
+    TH["Thumbnail worker"]:::queue --> DER[("Derived bucket")]:::store
+    DL(["Signed, short-lived<br/>download URL"]):::ok
+  end
+  UP --> Q --> checks
+  checks -->|"clean"| ORIG
+  checks -.->|"any check fails"| X
+  ORIG --> serve`,
         imgArr: [],
       },
       {
         title: "Search & Discovery",
         description:
           "A dedicated search projection is kept current by a background indexing worker. Queries use SQL Server Full-Text Search with an automatic LIKE fallback when Full-Text is not installed, and support facets, ranking, highlighting and autocomplete. On top of that, students get a personalised \"for you\" feed, trends and a leaderboard.",
-        mermaid: `flowchart LR
-          EV[Document Events] --> JOB[Search Index Jobs]
-          JOB --> W[Search Index Worker]
-          W --> PROJ[(Search Projection)]
-          Q[Search Query] --> PROV{Full-Text available?}
-          PROV -->|yes| FTS[SQL Server Full-Text]
-          PROV -->|no| LIKE[LIKE Fallback]
-          FTS --> PROJ
-          LIKE --> PROJ
-          PROJ --> RES[Facets, Ranking, Autocomplete]`,
+        mermaid: `flowchart TB
+  subgraph write["Write side"]
+    direction TB
+    EV["Document events"]:::svc
+    JOB[("Index jobs")]:::store
+    W["Search index worker"]:::queue
+  end
+  PROJ[("Search projection")]:::store
+  subgraph read["Read side"]
+    direction TB
+    QRY["Search request"]:::client
+    PROV{"Full-Text<br/>installed?"}:::core
+    FTS["SQL Server Full-Text"]:::svc
+    LIKE["LIKE fallback"]:::svc
+  end
+  RES(["Facets · ranking<br/>highlights · autocomplete"]):::ok
+  EV --> JOB --> W --> PROJ
+  QRY --> PROV
+  PROV -->|"yes"| FTS
+  PROV -->|"no"| LIKE
+  FTS & LIKE -->|"query"| PROJ
+  PROJ --> RES`,
         imgArr: [],
       },
       {
         title: "Discussions, Reputation & Moderation",
         description:
           "Documents are the social object of the platform. Students can open discussions anchored to a highlighted passage of a PDF or at course level, reply, upvote, @mention others, subscribe and mark accepted answers. Contributions earn reputation points via outbox handlers, in-app notifications keep users engaged, and admins can lock or hide threads and work through a report queue.",
-        mermaid: `flowchart TD
-          DOC[Document Viewer] --> SEL[Text Selection]
-          SEL --> DISC[Anchored Discussion]
-          DISC --> REP[Replies, Upvotes, Mentions]
-          REP --> ACC[Accepted Answer]
-          ACC --> EVT[Domain Events]
-          EVT --> PTS[Reputation Points]
-          EVT --> NOT[Notifications]
-          REP --> RPT[Reports]
-          RPT --> MOD[Admin Moderation Queue]`,
+        mermaid: `flowchart TB
+  DOC["PDF viewer"]:::client
+  SEL["Highlight a passage"]:::client
+  subgraph thread["Anchored discussion"]
+    direction TB
+    Q["Question"]:::core
+    R["Replies · upvotes<br/><small>@mentions</small>"]:::svc
+    A(["Accepted answer"]):::ok
+  end
+  EVT[("Outbox events")]:::store
+  PTS["Reputation points"]:::queue
+  NOT["Notifications"]:::queue
+  RPT["Report"]:::fail
+  MOD["Admin moderation<br/><small>lock · hide</small>"]:::svc
+  DOC --> SEL --> Q --> R --> A
+  R & A --> EVT
+  EVT --> PTS & NOT
+  R -.-> RPT --> MOD`,
         imgArr: [],
       },
     ],
@@ -436,61 +508,87 @@ export const Projects: ProjectInterface[] = [
         title: "Archiving, Metadata & Access Control",
         description:
           "Implemented backend features for document ingestion, metadata tagging, and lifecycle management within an audit-compliant enterprise archiving system. Documents flow through validation, classification, and storage — with access control policies ensuring only authorized users can retrieve or modify records. All operations adhere to audit trail requirements.",
-        mermaid: `flowchart TD
-          U[Internal Users and Systems] --> API[Backend Services and APIs]
-          API --> META[Metadata Extraction and Tagging]
-          API --> STORE[Archive Storage Layer]
-          API --> ACL[Access Control Policies]
-          META --> SEARCH[Search Index]
-          STORE --> SEARCH
-          ACL --> STORE
-          STORE --> AUDIT[Audit Trail]
-          AUDIT --> DB[(MSSQL Database)]`,
+        mermaid: `flowchart TB
+  SRC["Customer apps<br/><small>upload tax documents</small>"]:::client
+  API["Archive API<br/><small>ASP.NET Core · access control</small>"]:::core
+  K{{"Apache Kafka<br/><small>DocumentUploaded</small>"}}:::queue
+  subgraph pipe["Pipeline · CQRS / MediatR"]
+    direction LR
+    AV["Virus scan"]:::svc --> OCR["OCR"]:::svc --> META["Metadata extraction"]:::core --> VER["Versioning"]:::svc
+  end
+  subgraph stores["Storage & search"]
+    direction TB
+    ALF[("Alfresco<br/><small>audit-compliant storage</small>")]:::store
+    ES[("Elasticsearch<br/><small>full-text index</small>")]:::store
+  end
+  SRC --> API --> K --> pipe --> stores`,
         imgArr: [],
       },
       {
         title: "Keyword Management & Daily Processing",
         description:
           "Built scheduled processing services that run daily to update document keyword and tag assignments, keeping the search index consistent with the latest classification rules. The pipeline extracts metadata from new and changed documents, applies business-defined keyword logic, validates output, and persists results — ensuring long-term searchability and data integrity.",
-        mermaid: `flowchart TD
-          SCHED[Scheduled Daily Job] --> LOAD[Load New and Changed Documents]
-          LOAD --> EXTR[Extract Metadata]
-          EXTR --> KEY[Keyword and Tag Assignment]
-          KEY --> VALID[Validation and Business Rules]
-          VALID --> SAVE[Persist Updates]
-          SAVE --> IDX[Update Search Index]
-          IDX --> OBS[Monitoring and Alerting]`,
+        mermaid: `flowchart TB
+  subgraph prep["Nightly batch · prepare"]
+    direction LR
+    CRON(["Nightly schedule"]):::queue --> LOAD["Load new & changed<br/>documents"]:::svc --> EXT["Extract metadata"]:::svc
+  end
+  subgraph apply["Classify"]
+    direction LR
+    RULES["Apply keyword<br/>& tag rules"]:::core --> VAL["Validate<br/><small>business rules</small>"]:::core
+  end
+  subgraph out["Results"]
+    direction LR
+    SAVE[("Persist tags<br/><small>MSSQL</small>")]:::store --> IDX[("Refresh search index")]:::store
+  end
+  ERR["Log & alert"]:::fail
+  prep --> apply
+  apply -->|"valid"| out
+  apply -.->|"invalid"| ERR`,
         imgArr: [],
       },
       {
         title: "REST API Design & Internal Integration",
         description:
           "Designed and maintained REST APIs consumed by internal systems across departments. APIs follow consistent conventions with Swagger documentation, versioning awareness, and clear error contracts — making them reliable integration points for finance, tax, and records management teams.",
-        mermaid: `flowchart LR
-          FIN[Finance Systems] --> API[Buhl Archive API]
-          TAX[Tax Department] --> API
-          REC[Records Management] --> API
-          API --> VALID[Request Validation]
-          VALID --> SVC[Service Layer]
-          SVC --> EF[Entity Framework Core]
-          EF --> DB[(MSSQL)]
-          API --> SWAGGER[Swagger Docs]`,
+        mermaid: `flowchart TB
+  subgraph consumers["Connected channels"]
+    direction TB
+    APP["Customer apps"]:::client
+    FA["Tax authorities<br/><small>Finanzamt</small>"]:::ext
+    BI["Internal BI"]:::ext
+  end
+  subgraph api["Buhl Archive API"]
+    direction LR
+    SW["OpenAPI contract<br/><small>Swagger</small>"]:::svc -.-> VAL["Request validation<br/><small>clear error contracts</small>"]:::core --> SVC["Service layer"]:::svc
+  end
+  DB[("MSSQL")]:::store
+  consumers <-->|"REST · JSON"| api
+  api -->|"EF Core"| DB`,
         imgArr: [],
       },
       {
         title: "CI/CD, Testing & Observability",
         description:
           "Set up and maintained automated CI/CD pipelines using Azure DevOps, reducing manual deployment steps and catching regressions early. Introduced NUnit tests to establish a baseline of code reliability. Monitored runtime behavior using Grafana dashboards and Elastic Stack log analysis to proactively detect and investigate production issues.",
-        mermaid: `flowchart TD
-          DEV[Development] --> PR[Pull Request Review]
-          PR --> CI[Build and Test Pipeline]
-          CI --> NUNIT[NUnit Test Suite]
-          NUNIT --> DEP[Deployment via Azure DevOps]
-          DEP --> MON[Grafana Dashboards]
-          DEP --> LOG[Elastic Stack Logs]
-          MON --> FIX[Bug Investigation and Fix]
-          LOG --> FIX
-          FIX --> DEV`,
+        mermaid: `flowchart TB
+  subgraph dev["Develop"]
+    direction LR
+    DEV["Feature branch"]:::client --> PR["Pull request<br/><small>code review</small>"]:::core
+  end
+  subgraph ci["Azure DevOps pipeline"]
+    direction LR
+    B["Build"]:::svc --> T["NUnit tests"]:::svc --> DEP["Deploy<br/><small>Docker · Kubernetes</small>"]:::svc
+  end
+  subgraph ops["Observability"]
+    direction TB
+    G["Grafana dashboards"]:::ops
+    E["Elastic Stack logs"]:::ops
+  end
+  FIX["Root-cause fix"]:::fail
+  dev --> ci --> ops
+  ops -.->|"incident"| FIX
+  FIX -.->|"next iteration"| dev`,
         imgArr: [],
       },
     ],
@@ -528,28 +626,41 @@ export const Projects: ProjectInterface[] = [
         title: "Agent Pipeline",
         description:
           "The system is composed of specialised LLM-based agents. A planning agent turns a topic into a structured outline, a writing agent produces the script, and downstream steps generate voice-over, visuals and the final render. Each step has a clear input/output contract so steps can be retried or swapped independently.",
-        mermaid: `flowchart LR
-          IDEA[Topic / Idea] --> PLAN[Planning Agent]
-          PLAN --> SCRIPT[Script Agent]
-          SCRIPT --> TTS[Text-to-Speech]
-          SCRIPT --> VIS[Visual Generation]
-          TTS --> RENDER[FFmpeg Render]
-          VIS --> RENDER
-          RENDER --> OUT[Finished Video]`,
+        mermaid: `flowchart TB
+  IDEA(["Topic"]):::client
+  subgraph agents["LLM agents"]
+    direction TB
+    PLAN["Planner<br/><small>outline · scenes</small>"]:::core
+    WRITE["Script writer"]:::core
+  end
+  subgraph media["Media generation"]
+    direction TB
+    TTS["Text-to-speech"]:::ext
+    VIS["Visual generation"]:::ext
+  end
+  RENDER["FFmpeg render<br/><small>audio + visuals + captions</small>"]:::svc
+  OUT(["Finished video"]):::ok
+  IDEA --> PLAN --> WRITE
+  WRITE --> TTS & VIS
+  TTS & VIS --> RENDER --> OUT`,
         imgArr: [],
       },
       {
         title: "Reliability & Error Handling",
         description:
           "External AI and media APIs fail in many creative ways — timeouts, rate limits, malformed output. The pipeline stabilises these integrations with retries and backoff, output validation between steps, and resumable jobs so a failure late in the pipeline does not throw away earlier, expensive work.",
-        mermaid: `flowchart TD
-          STEP[Pipeline Step] --> CALL[External API Call]
-          CALL -->|ok| VALID[Validate Output]
-          CALL -->|error| RETRY[Retry with Backoff]
-          RETRY --> CALL
-          VALID -->|invalid| RETRY
-          VALID -->|valid| CKPT[Persist Checkpoint]
-          CKPT --> NEXT[Next Step]`,
+        mermaid: `flowchart TB
+  STEP["Pipeline step"]:::svc
+  CALL["External API call<br/><small>LLM · TTS</small>"]:::ext
+  CHK{"Output<br/>valid?"}:::core
+  RETRY["Retry<br/><small>exponential backoff</small>"]:::queue
+  CKPT[("Checkpoint")]:::store
+  NEXT(["Next step"]):::ok
+  FAIL["Mark failed<br/><small>resume later from checkpoint</small>"]:::fail
+  STEP --> CALL --> CHK
+  CHK -->|"yes"| CKPT --> NEXT
+  CHK -->|"no / error"| RETRY --> CALL
+  RETRY -.->|"retries exhausted"| FAIL`,
         imgArr: [],
       },
     ],
@@ -584,69 +695,75 @@ export const Projects: ProjectInterface[] = [
         title: "Problem Context & Motivation",
         description:
           "Feature Models describe the valid configuration space of a Software Product Line — a structured way of representing which combinations of features are permitted. Learning these models automatically from existing configurations is attractive, but the boolean nature of the configuration space causes a curse of dimensionality: as the number of features grows, the space becomes exponentially large and sparse, making standard machine learning techniques unreliable.",
-        mermaid: `flowchart LR
-          FM[Feature Model]
-          CONF[Existing Configurations]
-          SPACE[Boolean Configuration Space]
-          DIM[Curse of Dimensionality]
-          ML[Feature Model Learning via ML]
-
-          FM --> CONF
-          CONF --> SPACE
-          SPACE --> DIM
-          DIM --> ML`,
+        mermaid: `flowchart TB
+  SPL["Software Product Line<br/><small>n optional features</small>"]:::client
+  CONF[("Known valid<br/>configurations")]:::store
+  SPACE["Boolean space<br/><small>up to 2ⁿ configurations</small>"]:::fail
+  ML["ML classifier<br/><small>valid vs. invalid</small>"]:::core
+  FM(["Learned feature model"]):::ok
+  SPL --> CONF --> ML
+  SPL --> SPACE -.->|"curse of dimensionality"| ML
+  ML --> FM`,
         imgArr: [],
       },
       {
         title: "Encoding Strategies",
         description:
           "The thesis compares classical boolean vector encoding — where each feature is a binary dimension — against manually designed encoding strategies that exploit known feature relationships to reduce the dimensionality of the input space while preserving configuration semantics. The goal is to give the learning algorithm a more compact and meaningful representation to work with.",
-        mermaid: `flowchart TD
-          BOOL[Classical Boolean Vector Encoding]
-          MAN[Manual Relationship-Aware Encoding]
-          DIM1[High-Dimensional Dataset]
-          DIM2[Reduced and Semantically Rich Dataset]
-          TRADE[Trade-off: Information Preservation vs Compression]
-
-          BOOL --> DIM1
-          MAN --> DIM2
-          DIM1 --> TRADE
-          DIM2 --> TRADE`,
+        mermaid: `flowchart TB
+  CONF[("Configurations")]:::store
+  subgraph enc["Encoding strategies"]
+    direction TB
+    BOOL["Boolean vector<br/><small>one dimension per feature</small>"]:::svc
+    MAN["Relationship-aware encoding<br/><small>groups · dependencies</small>"]:::core
+  end
+  HI["High-dimensional,<br/>sparse dataset"]:::fail
+  LO(["Compact, semantically<br/>rich dataset"]):::ok
+  CONF --> BOOL --> HI
+  CONF --> MAN --> LO`,
         imgArr: [],
       },
       {
         title: "Dimensionality Reduction Techniques",
         description:
           "In addition to manual encoding, the thesis applies two automated dimensionality reduction techniques: Linear PCA, which finds principal components in continuous space, and Logistic PCA, which is specifically designed for binary data. Both transform the high-dimensional boolean dataset into a lower-dimensional representation that retains the most discriminative structure for Feature Model Learning.",
-        mermaid: `flowchart TD
-          DATA[Encoded Boolean Dataset]
-          PCA[Linear PCA]
-          LPCA[Logistic PCA — Binary-Aware]
-          RED[Lower-Dimensional Representation]
-          FML[Feature Model Learning]
-
-          DATA --> PCA --> RED
-          DATA --> LPCA --> RED
-          RED --> FML`,
+        mermaid: `flowchart TB
+  DATA[("Encoded dataset")]:::store
+  subgraph dr["Dimensionality reduction"]
+    direction TB
+    PCA["Linear PCA<br/><small>continuous components</small>"]:::svc
+    LPCA["Logistic PCA<br/><small>designed for binary data</small>"]:::core
+  end
+  RED["Reduced feature space"]:::svc
+  AUTO["AutoML training<br/><small>AutoGluon</small>"]:::queue
+  FML(["Feature model learning"]):::ok
+  DATA --> PCA & LPCA
+  PCA & LPCA --> RED --> AUTO --> FML`,
         imgArr: [],
       },
       {
         title: "Evaluation & Results",
         description:
           "All methods were evaluated empirically across multiple Software Product Line datasets using precision, recall, and runtime as metrics. The results reveal a consistent trade-off: manual encoding and Logistic PCA improve learning accuracy but increase preprocessing cost, while Linear PCA offers faster computation at the expense of some precision. The thesis provides a structured comparison to guide practitioners in choosing the right approach based on their scalability requirements.",
-        mermaid: `flowchart LR
-          METHODS[Encoding and Reduction Methods]
-          PREC[Precision]
-          REC[Recall]
-          TIME[Runtime]
-          TRADE[Accuracy vs Efficiency Trade-off]
-
-          METHODS --> PREC
-          METHODS --> REC
-          METHODS --> TIME
-          TIME --> TRADE
-          PREC --> TRADE
-          REC --> TRADE`,
+        mermaid: `flowchart TB
+  subgraph methods["Methods compared"]
+    direction TB
+    M1["Boolean baseline"]:::svc
+    M2["Manual encoding"]:::svc
+    M3["Linear PCA"]:::svc
+    M4["Logistic PCA"]:::svc
+  end
+  PIPE["Automated experiment pipeline<br/><small>Shell · Singularity</small>"]:::queue
+  subgraph metrics["Metrics"]
+    direction TB
+    P["Precision"]:::core
+    R["Recall"]:::core
+    T["Runtime"]:::core
+  end
+  RES(["Accuracy vs. efficiency<br/>trade-off"]):::ok
+  M1 & M2 & M3 & M4 --> PIPE
+  PIPE --> P & R & T
+  P & R & T --> RES`,
         imgArr: [],
       },
     ],

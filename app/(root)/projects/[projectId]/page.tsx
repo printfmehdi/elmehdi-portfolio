@@ -129,10 +129,14 @@ export default async function Project({ params }: ProjectPageProps) {
       </section>
 
       {project.pagesInfoArr.length > 0 && (
-        <section className="mb-12">
-          <h2 className="mb-2 font-heading text-2xl">Architecture & key features</h2>
-          <p className="mb-5 text-sm text-muted-foreground">
-            Select a topic to see the details and the diagram behind it.
+        <section className="relative left-1/2 mb-12 w-[min(100vw-2rem,64rem)] -translate-x-1/2">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+            Deep dive
+          </p>
+          <h2 className="mb-2 font-heading text-2xl sm:text-3xl">Architecture & key features</h2>
+          <p className="mb-6 text-sm text-muted-foreground">
+            {project.pagesInfoArr.length} topics — pick one to see how it works and the
+            diagram behind it.
           </p>
           <ProjectPageInfoTabs pages={project.pagesInfoArr} />
         </section>
