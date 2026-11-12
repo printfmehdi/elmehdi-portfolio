@@ -162,9 +162,39 @@
   opacity: 0.72;
 }
 
+/* ───────── Hero portrait ───────── */
+.portrait-ring {
+  animation: portrait-spin 9s linear infinite;
+}
+
+.portrait-float {
+  animation: portrait-float 6s ease-in-out infinite;
+}
+
+@keyframes portrait-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes portrait-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .portrait-ring,
+  .portrait-float {
+    animation: none;
   }
 }
 

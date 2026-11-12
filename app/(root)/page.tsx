@@ -9,6 +9,7 @@ import { ClientPageWrapper } from "@/components/common/client-page-wrapper";
 import { Icons } from "@/components/common/icons";
 import { SectionHeading } from "@/components/common/section-heading";
 import Timeline from "@/components/experience/timeline";
+import { ProfilePortrait } from "@/components/home/profile-portrait";
 import ProjectCard from "@/components/projects/project-card";
 import SkillGroups from "@/components/skills/skill-groups";
 import { buttonVariants } from "@/components/ui/button";
@@ -188,26 +189,10 @@ export default function IndexPage() {
 
         <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
           <AnimatedSection delay={0.15}>
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-primary/20 via-primary/5 to-transparent blur-2xl" />
-              <div className="relative overflow-hidden rounded-[1.75rem] border bg-card p-2 shadow-xl shadow-black/5">
-                <Image
-                  src={profileImg}
-                  height={440}
-                  width={360}
-                  sizes="(max-width: 1024px) 60vw, 360px"
-                  className="h-auto w-56 rounded-[1.35rem] object-cover sm:w-64 lg:w-80"
-                  alt="Portrait of El Mehdi Rahali, Backend Software Engineer (C# / .NET)"
-                  priority
-                />
-              </div>
-              <div className="absolute -bottom-5 -left-6 hidden rounded-xl border bg-card/95 px-4 py-3 shadow-lg backdrop-blur sm:block">
-                <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
-                  Core stack
-                </p>
-                <p className="text-sm font-semibold">C# · ASP.NET Core · Azure</p>
-              </div>
-            </div>
+            <ProfilePortrait
+              src={profileImg}
+              alt="Portrait of El Mehdi Rahali, Backend Software Engineer (C# / .NET)"
+            />
           </AnimatedSection>
         </div>
       </section>
